@@ -16,7 +16,7 @@ try:
 	MAXIOT.START()
 	while 1:
 		time.sleep(1)
-		MAXIOT.SEND("12345")	
+		MAXIOT.SEND(1,"12345")	
 finally:
 	print "SYSTEM Exiting !!!!!"
 	MAXIOT.CLIENT_STATUS  = 0

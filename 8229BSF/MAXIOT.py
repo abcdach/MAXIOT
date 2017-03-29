@@ -6,8 +6,9 @@ import socket
 import sys
 import json
 import time
+import re
 ##############################################
-#import ILI9341
+import MEDIATOR
 ##############################################
 #data1 = str(sys.argv[1])
 #data2 = str(sys.argv[2])
@@ -82,34 +83,46 @@ class clientThread (threading.Thread):
 				DATA_LEN = len(data)
 				#print "... SOCK : DARA LEN : "+str(DATA_LEN)
 				if(DATA_LEN==0): exit(0)
-				print("--> SOCK "+data)
-				#-------------------------------		
-				json_data = json.loads(data)
-				N_VEL = int(json_data["N"])
+				#print("--> SOCK "+data)
 				#-------------------------------
-				if(N_VEL==1):
-					data = "{\"N\":\"1\",\"D\":\""+DEVICE_NAME+"\",\"V\":\""+DEVICE_DESCRIPTION+"\"}"
-					sock.sendall(data)
-					print("<-- SOCK "+data)
-				#-------------------------------			
-				if(N_VEL==0):
-					V_VEL = str(json_data["V"])
-					print str(V_VEL)
-				#-------------------------------	
-				if(N_VEL==2):
-					SATELIT_STATUS = 1
-					SATELIT = pingThread(1, "Thread-1", 1)
-					SATELIT.start()
-					print "xSATELIT_STATUS:"+str(SATELIT_STATUS)
-				#-------------------------------			
-				#if(N_VEL==7):
-					#data = "{\"N\":\"8\",\"i\":\"PING\"}"
-					#sock.sendall(data)
-					#print("<-- SOCK "+data)
-				#-------------------------------			
-				if(N_VEL==9):
-					exit(0)	
-				#-------------------------------		
+				data_split = re.split(r'}',data)
+				#print(data_split)
+				Array_len = len(data_split)
+				#print str(Array_len)
+				for x in range(Array_len):
+					sub_data = data_split[x]
+					if(len(sub_data)>5):
+						sub_data = sub_data + "}"
+						print("--> SOCK "+sub_data)
+						#-------------------------------
+						json_data = json.loads(sub_data)
+						N_VEL = int(json_data["N"])
+						#-------------------------------
+						if(N_VEL==1):
+							data = "{\"N\":\"1\",\"D\":\""+DEVICE_NAME+"\",\"V\":\""+DEVICE_DESCRIPTION+"\"}"
+							sock.sendall(data)
+							print("<-- SOCK "+data)
+						#-------------------------------			
+						if(N_VEL==0):
+							V_VEL = str(json_data["V"])
+							S_VEL = str(json_data["S"])
+							print str(V_VEL)
+							print str(S_VEL)
+						#-------------------------------	
+						if(N_VEL==2):
+							SATELIT_STATUS = 1
+							SATELIT = pingThread(1, "Thread-1", 1)
+							SATELIT.start()
+							print "xSATELIT_STATUS:"+str(SATELIT_STATUS)
+						#-------------------------------			
+						#if(N_VEL==7):
+							#data = "{\"N\":\"8\",\"i\":\"PING\"}"
+							#sock.sendall(data)
+							#print("<-- SOCK "+data)
+						#-------------------------------			
+						if(N_VEL==9):
+							exit(0)	
+						#-------------------------------		
 		finally:
 		    print "CLIENT Exiting !!!!!"
 		    SATELIT_STATUS = 0
@@ -122,17 +135,17 @@ def START():
 	CLIENT = clientThread(1, "Thread-1", 1)
 	CLIENT.start()
  
-def SEND(DATA):
+def SEND(SLOT,DATA):
 	global SATELIT_STATUS
 	if(SATELIT_STATUS==1):
-		data = "{\"N\":\"0\",\"S\":\"0\",\"T\":\"0\",\"V\":\""+str(DATA)+"\"}"
+		data = "{\"N\":\"0\",\"S\":\""+str(SLOT)+"\",\"V\":\""+str(DATA)+"\"}"
 		sock.sendall(data)
 		print("<-- SOCK "+data)    
   
     
     
     
-    
+#data = "{\"N\":\"0\",\"S\":\"0\",\"T\":\"0\",\"V\":\""+str(DATA)+"\"}"    
     
     
     
