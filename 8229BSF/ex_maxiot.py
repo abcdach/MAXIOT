@@ -32,7 +32,7 @@ DEVICE_DESCRIPTION = "Capacitive Touch"
 data = ""
 SATELIT_STATUS = 0
 ##############################################
-class myThread (threading.Thread):
+class pingThread (threading.Thread):
 	def __init__(self, threadID, name, counter):
 		threading.Thread.__init__(self)
 		self.threadID = threadID
@@ -84,8 +84,8 @@ try:
 		#-------------------------------	
 		if(N_VEL==2):
 			SATELIT_STATUS = 1
-			thread1 = myThread(1, "Thread-1", 1)
-			thread1.start()
+			SATELIT = pingThread(1, "Thread-1", 1)
+			SATELIT.start()
 		#-------------------------------			
 		#if(N_VEL==7):
 			#data = "{\"N\":\"8\",\"i\":\"PING\"}"
