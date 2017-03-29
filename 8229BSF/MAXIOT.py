@@ -92,7 +92,7 @@ class clientThread (threading.Thread):
 				for x in range(Array_len):
 					sub_data = data_split[x]
 					if(len(sub_data)>5):
-						sub_data = sub_data + "}"
+						#sub_data = sub_data + "}"
 						print("--> SOCK "+sub_data)
 						#-------------------------------
 						json_data = json.loads(sub_data)
