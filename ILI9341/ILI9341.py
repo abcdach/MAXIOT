@@ -1,48 +1,25 @@
 import sys
 sys.path.append('FONTS')
 
-
-
 from pyA20 import spi
 from pyA20.gpio import gpio
 from pyA20.gpio import port
 import time
-#import FONT1616
+from Config import *
 from FONT1616 import *
-
 from GroteskBold16x32 import *
 from GroteskBold24x48 import *
 from GroteskBold32x64 import *
-
-#from FONTS import GroteskBold32x64
-
-#from FONTS import GroteskBold32x64
-
-
 from SevenSegmentFull import *
 
-
-
-
-
-#spi.openSPI(device="/dev/spidev0.0", speed=48000000)
-#spi.open("/dev/spidev0.0")
 spi.close()
-spi.open("/dev/spidev0.0", mode=0, delay=0, bits_per_word=8, speed=48000000)
-#spi.close()
-
-#spi.open("/dev/spidev0.0")
+spi.open(spi_dev, mode=0, delay=0, bits_per_word=8, speed=spi_speed)
 
 gpio.init()
-gpio.setcfg(port.PA20, gpio.OUTPUT)
-gpio.setcfg(port.PA10, gpio.OUTPUT)
-gpio.setcfg(port.PA9,  gpio.OUTPUT)
-gpio.setcfg(port.PA8,  gpio.OUTPUT)
-
-GPIO_LED = port.PA20
-GPIO_RST = port.PA10
-GPIO_DC  = port.PA9
-GPIO_CS  = port.PA8
+gpio.setcfg(pin_LED, gpio.OUTPUT)
+gpio.setcfg(pin_RST, gpio.OUTPUT)
+gpio.setcfg(pin_DC,  gpio.OUTPUT)
+gpio.setcfg(pin_CS,  gpio.OUTPUT)
 
 RED     = 0xf800
 GREEN   = 0x07e0
@@ -60,19 +37,18 @@ GRAY2   = 0x4208
 
 IME = 0.001
 def LED(val):
-	gpio.output(GPIO_LED, val)
+	gpio.output(pin_LED, val)
 def RST(val):
-	gpio.output(GPIO_RST, val)
+	gpio.output(pin_RST, val)
 def DC(val):
-	gpio.output(GPIO_DC,  val)
+	gpio.output(pin_DC,  val)
 def CS(val):
-	gpio.output(GPIO_CS,  val)
+	gpio.output(pin_CS,  val)
 	
 	
 def INIT():
 	LED(1)
-	CS(1)
-	
+	CS(1)	
 	RST(0)
 	RST(1)	
 
