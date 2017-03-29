@@ -9,14 +9,14 @@
 import time
 import MAXIOT
 import MEDIATOR
-
+import 8229BSF
 
 
 try:
 	MAXIOT.START()
+	8229BSF.START()
 	while 1:
 		time.sleep(1)
-		#MAXIOT.SEND(1,"12345")
 		MEDIATOR.TX(1,"12345")	
 finally:
 	print "SYSTEM Exiting !!!!!"
