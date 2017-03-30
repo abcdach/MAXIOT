@@ -36,15 +36,15 @@ def Text(DATA):
 	TEXT_DATA = DAT[6]
 	TEXT_DATA = TEXT_DATA[0:TEXT_LIMI]
 	
-	print "-----------------------------"
-	print "TEXT_FONT = "+str(TEXT_FONT)
-	print "TEXT_X    = "+str(TEXT_X)
-	print "TEXT_Y    = "+str(TEXT_Y)
-	print "TEXT_COL1 = "+str(TEXT_COL1)
-	print "TEXT_COL2 = "+str(TEXT_COL2)
-	print "TEXT_LIMI = "+str(TEXT_LIMI)	
-	print "TEXT_DATA = "+str(TEXT_DATA)
-	print "-----------------------------"
+#	print "-----------------------------"
+#	print "TEXT_FONT = "+str(TEXT_FONT)
+#	print "TEXT_X    = "+str(TEXT_X)
+#	print "TEXT_Y    = "+str(TEXT_Y)
+#	print "TEXT_COL1 = "+str(TEXT_COL1)
+#	print "TEXT_COL2 = "+str(TEXT_COL2)
+#	print "TEXT_LIMI = "+str(TEXT_LIMI)	
+#	print "TEXT_DATA = "+str(TEXT_DATA)
+#	print "-----------------------------"
 	
 	if(len(TEXT_DATA) < TEXT_LIMI):
 		n = TEXT_LIMI - len(TEXT_DATA)
