@@ -24,8 +24,15 @@ try:
 	########################
 	MEDIATOR.DevThread_STATUS = 1
 	MEDIATOR.START()
-	########################	
+	########################
 	while 1:
+		time.sleep(0.01)
+		while(fifo.Len()):
+			d = fifo.Get()
+			print "xxxxx = " + str(d)
+			MEDIATOR.Text(d)
+			time.sleep(0.01)	
+	while 1:	
 		time.sleep(1)
 
 finally:

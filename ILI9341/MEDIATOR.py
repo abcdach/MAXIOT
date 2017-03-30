@@ -28,10 +28,11 @@ class DevThread (threading.Thread):
 			if event_is_set:
 				print ":))))))"
 				e.clear()
-				while(fifo.Len()):
-					d = fifo.Get()
-					print "xxxxx = " + str(d)
-					Text(d)
+#				while(fifo.Len()):
+#					d = fifo.Get()
+#					print "xxxxx = " + str(d)
+#					Text(d)
+#					time.sleep(0.01)
 			else:
 				print ":("
 		DevThread_STATUS = 0
