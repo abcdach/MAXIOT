@@ -34,16 +34,27 @@ try:
 	########################
 	ILI9341.INIT()
 	ILI9341.CLS3()
-	
+
+	#MEDIATOR.DataEvent = 0
+	#MEDIATOR.DevThread_STATUS = 1
+	#MEDIATOR.START()
 	
 	while 1:
+		if(MEDIATOR.DataEvent==1):
+			print "xxxxx = " + str(MEDIATOR.DataEvent)
+			print "yyyyy = " + MEDIATOR.RX_DATA
+			MEDIATOR.Text(MEDIATOR.RX_DATA)
+			MEDIATOR.DataEvent = 0
+		time.sleep(0.0001)	
+	while 1:
 		time.sleep(1)
+		ILI9341.TEST()
 		#MEDIATOR.TX(0,"12345")	
 finally:
 	print "SYSTEM Exiting !!!!!"
 	MAXIOT.CLIENT_STATUS  = 0
 	MAXIOT.SATELIT_STATUS = 0
-
+	MEDIATOR.DevThread_STATUS = 0
 
 
 
