@@ -3,13 +3,14 @@ from pyA20.gpio import gpio
 from pyA20.gpio import port
 import time
 
+import MEDIATOR
+
 gpio.init()
 gpio.setcfg(pin_SLC, gpio.OUTPUT)
 gpio.setcfg(pin_SDO, gpio.INPUT)
 
-xkeySTAT = 0;
-
 def START():
+	xkeySTAT = 0;
 	while True:
 		time.sleep(0.1)
 		xkey = 0
@@ -27,6 +28,7 @@ def START():
 			if(xkey != 0):
 				xkeySTAT = 0
 				print xkey
+				MEDIATOR.TX(0,xkey)
 
 			
 			
