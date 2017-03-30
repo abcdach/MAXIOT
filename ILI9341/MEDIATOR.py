@@ -1,7 +1,7 @@
 import re
 import MAXIOT
 import ILI9341
-
+import fifo
 
 import threading
 import time
@@ -73,6 +73,11 @@ def RX(_SLOT,_DATA):
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
 	print "--> S("+SLOT+") "+DATA
+	
+	fifo.Put(DATA)
+	#print "tttttttttttt  " + str(fifo.Len())
+	#print "tttttttttttt  " + str(fifo.Get())
+	
 	global RX_DATA
 	
 	global DataEvent

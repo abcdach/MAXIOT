@@ -23,9 +23,12 @@ import time
 import MAXIOT
 import MEDIATOR
 import ILI9341
-
+import fifo
 
 try:
+
+	fifo.init()
+
 	MAXIOT.Server_IP          = "10.0.0.13"
 	MAXIOT.Server_PORT        =  3004
 	MAXIOT.DEVICE_NAME        = "9002"
@@ -40,11 +43,12 @@ try:
 	#MEDIATOR.START()
 	
 	while 1:
-		if(MEDIATOR.DataEvent==1):
-			print "xxxxx = " + str(MEDIATOR.DataEvent)
-			print "yyyyy = " + MEDIATOR.RX_DATA
-			MEDIATOR.Text(MEDIATOR.RX_DATA)
-			MEDIATOR.DataEvent = 0
+		#if(!=0):
+		while(fifo.Len()):
+			xData = fifo.Get()
+			print "xxxxx = " + str(xData)
+			MEDIATOR.Text(xData)
+
 		time.sleep(0.0001)	
 	while 1:
 		time.sleep(1)
