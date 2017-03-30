@@ -49,7 +49,7 @@ try:
 			print "xxxxx = " + str(xData)
 			MEDIATOR.Text(xData)
 
-		time.sleep(0.0001)	
+		time.sleep(0.1)	
 	while 1:
 		time.sleep(1)
 		ILI9341.TEST()
