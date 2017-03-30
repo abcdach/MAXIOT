@@ -17,29 +17,24 @@ class DevThread (threading.Thread):
 		threading.Thread.__init__(self)
 		self.threadID = threadID
 		self.name = name
+		ILI9341.INIT()
+		ILI9341.CLS3()
 	def run(self):
-		#global DataEvent
-		DataEvent = 0
+		global DevThread_STATUS
 		while 1:
-			print "xxxxx = " + str(DataEvent)
-			if(DevThread_STATUS==0):break	
-#			if(DataEvent==1):
-#				DataEvent = 0
-#				print ":))))))"
-#			else:
-#				print "----"
-			time.sleep(0.01)
-	
-#		while 1:
-#			print "wait_for_event starting !!!!!!"
-#			event_is_set = e.wait(1)			
-#			if(DevThread_STATUS==0):break
-#
-#			if event_is_set:
-#				print ":))))))" + xDATA
-#				e.clear()
-#			else:
-#				print ":("
+			print "wait_for_event starting !!!!!!"
+			event_is_set = e.wait(1)			
+			if(DevThread_STATUS==0):break
+			if event_is_set:
+				print ":))))))"
+				e.clear()
+				while(fifo.Len()):
+					d = fifo.Get()
+					print "xxxxx = " + str(d)
+					Text(d)
+			else:
+				print ":("
+		DevThread_STATUS = 0
 
 
 		
@@ -47,44 +42,28 @@ class DevThread (threading.Thread):
 
 
 
-#def START():
-	#global DataEvent
-	#DataEvent = 0
-	#global e
-	#e = threading.Event()
-	#t1 = threading.Thread(name='blocking',target=wait_for_event,args=(e,))
-    #t1.start()
-    
-    
-	#global DataEvent
-	#DataEvent = 0
-	#xSATELIT = DevThread(1, "Thread-1", DataEvent)
-	#xSATELIT.start()   
-    
+def START():
+	global DataEvent
+	DataEvent = 0
+	global e
+	e = threading.Event()
+	global DataEvent
+	DataEvent = 0
+	xSATELIT = DevThread(1, "Thread-1", DataEvent)
+	xSATELIT.start()   
 	#time.sleep(10)
 	#e.set()
-
-
-
-
-
 
 def RX(_SLOT,_DATA):
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
 	print "--> S("+SLOT+") "+DATA
-	
 	fifo.Put(DATA)
-	#print "tttttttttttt  " + str(fifo.Len())
-	#print "tttttttttttt  " + str(fifo.Get())
-	
-	global RX_DATA
-	
 	global DataEvent
 	if(DataEvent==0):
 		RX_DATA = DATA
 		DataEvent = 1
-	#e.set()
+	e.set()
 	#Text(DATA)
 	
 def ToCOLOR(color):
