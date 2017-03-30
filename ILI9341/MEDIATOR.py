@@ -6,13 +6,14 @@ def RX(_SLOT,_DATA):
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
 	print "--> S("+SLOT+") "+DATA
+	Text(DATA)
 	
-	if   SLOT == "0":
-		Text(DATA)
-	elif SLOT == "1":
-		ILI9341.Text_16(0,16*1,DATA,ILI9341.GREEN,ILI9341.BLACK)
-	elif SLOT == "2":
-		ILI9341.Text_16(0,16*2,DATA,ILI9341.GREEN,ILI9341.BLACK)
+#	if   SLOT == "0":
+#		Text(DATA)
+#	elif SLOT == "1":
+#		ILI9341.Text_16(0,16*1,DATA,ILI9341.GREEN,ILI9341.BLACK)
+#	elif SLOT == "2":
+#		ILI9341.Text_16(0,16*2,DATA,ILI9341.GREEN,ILI9341.BLACK)
 
 def ToCOLOR(color):
 	if   color == "RED":return ILI9341.RED
@@ -30,21 +31,21 @@ def ToCOLOR(color):
 
 def Text(DATA):
 
-
-	print "-----------------------------"
  	DAT = re.split(r',',DATA)
- 	print str(DAT)
  	Array_len  = len(DAT)
- 	print str(Array_len)
- 	print "-----------------------------"
  	
  	TEXT_FONT = DAT[0]
  	TEXT_X    = int(DAT[1])
 	TEXT_Y    = int(DAT[2])	
 	TEXT_COL1 = ToCOLOR(DAT[3])	
-	TEXT_COL2 = ToCOLOR(DAT[4])	
-	TEXT_DATA = DAT[5]
-
+	TEXT_COL2 = ToCOLOR(DAT[4])
+	TEXT_LIMI = int(DAT[5])	
+	TEXT_DATA = DAT[6]
+	TEXT_DATA = TEXT_DATA[0:TEXT_LIMI]
+	
+	if(len(TEXT_DATA) < TEXT_LIMI):
+		n = TEXT_LIMI - len(TEXT_DATA)
+		TEXT_DATA = TEXT_DATA + (" " * n)
 	
 	if   TEXT_FONT == "16L":
 		ILI9341.Text_16( TEXT_X,TEXT_Y,TEXT_DATA,TEXT_COL1,TEXT_COL2)
