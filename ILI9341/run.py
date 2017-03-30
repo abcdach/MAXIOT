@@ -38,7 +38,7 @@ try:
 	
 	while 1:
 		time.sleep(1)
-		MEDIATOR.TX(0,"12345")	
+		#MEDIATOR.TX(0,"12345")	
 finally:
 	print "SYSTEM Exiting !!!!!"
 	MAXIOT.CLIENT_STATUS  = 0

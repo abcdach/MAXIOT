@@ -5,6 +5,7 @@ from pyA20.gpio import port
 
 spi_dev   = "/dev/spidev0.0"
 spi_speed = 48000000
+#spi_speed = 10000000
 
 pin_LED = port.PA20
 pin_RST = port.PA10
