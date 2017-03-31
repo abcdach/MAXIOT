@@ -18,6 +18,10 @@ def RUN_MEM_DATA_PROCESSING(DATA):
 def RUN_DATA_PROCESSING(DATA):
 	print "--> LCD : " + str(DATA)
 	GUI.Text(DATA)
+#############################################
+def RUN_LOOP():
+	time.sleep(1)
+	print "LOOP"
 
 
 

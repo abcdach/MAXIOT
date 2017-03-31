@@ -9,8 +9,9 @@ import threading
 import time
 import USER_BRIDGE
 ##############################################
-USER_STATUS=0
-MEM_USER_STATUS=0
+USER_STATUS     = 0
+MEM_USER_STATUS = 0
+USER_LOOP       = 0
 MED_dbg = 0
 USR_dbg = 1
 ##############################################
@@ -32,19 +33,16 @@ class mem_userThread(threading.Thread):
 			if mem_user_event_is_set:
 				if(MED_dbg==1):print "... MED : MEM : EVENT : detected !!!"
 				mem_userEvent.clear()
-				#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START
 				while(RX_FIFO_Len()):
 					d = RX_FIFO_Get()
 					USER_BRIDGE.RUN_MEM_DATA_PROCESSING(d)
-				#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 			else:
 				if(MEM_USER_STATUS==0):break
 		if(MED_dbg==1):print "###################################"
 		if(MED_dbg==1):print "... MED : MEM : USER STOP !!!"
 		if(MED_dbg==1):print "###################################"
 		MEM_USER_STATUS = 0
-
-
+#########################################################
 class userThread(threading.Thread):
 	def __init__(self, threadID, name):
 		threading.Thread.__init__(self)
@@ -63,24 +61,42 @@ class userThread(threading.Thread):
 			if user_event_is_set:
 				if(MED_dbg==1):print "... MED : ... : EVENT : detected !!!"
 				userEvent.clear()
-				#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START
 				while(RX_FIFO_Len()):
 					d = RX_FIFO_Get()
 					USER_BRIDGE.RUN_DATA_PROCESSING(d)
-				#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 			else:
 				if(USER_STATUS==0):break
 		if(MED_dbg==1):print "###################################"
 		if(MED_dbg==1):print "... MED : ... : USER STOP !!!"
 		if(MED_dbg==1):print "###################################"
-		USER_STATUS = 0
-
-
+		USER_STATUS = 0	
+#########################################################		
+class loop_userThread(threading.Thread):
+	def __init__(self, threadID, name):
+		threading.Thread.__init__(self)
+		self.threadID = threadID
+		self.name = name
+	def run(self):
+		if(MED_dbg==1):print "###################################"
+		if(MED_dbg==1):print "... MED : ... : USER LOOP !!!"
+		if(MED_dbg==1):print "###################################"
+		global USER_LOOP
+		while 1:		
+			if(USER_LOOP==0):break
+			USER_BRIDGE.RUN_LOOP()
+			if(USER_LOOP==0):break
+		if(MED_dbg==1):print "###################################"
+		if(MED_dbg==1):print "... MED : ... : USER LOOP !!!"
+		if(MED_dbg==1):print "###################################"
+		USER_LOOP = 0
+#########################################################
 def START():
 	RX_FIFO_init()
 	USER_BRIDGE.RUN_INIT()
 	global USER_STATUS
 	global MEM_USER_STATUS
+	global USER_LOOP
+	USER_LOOP       = 1
 	USER_STATUS     = 1
 	MEM_USER_STATUS = 1
 	#-------------------------------
@@ -94,7 +110,11 @@ def START():
 	global mem_userEvent
 	mem_userEvent = threading.Event()
 	_mem_userThread = mem_userThread(1, "mem_userThread")
-	_mem_userThread.start()   
+	_mem_userThread.start()
+	#-------------------------------
+	time.sleep(0.2)
+	_loop_userThread = loop_userThread(1, "mem_userThread")
+	_loop_userThread.start()  
 #########################################################
 def MEM_RX(_SLOT,_DATA):#damaxsovrebuli monacemebis migeba
 	SLOT = str(_SLOT)
