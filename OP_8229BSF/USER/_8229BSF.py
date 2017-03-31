@@ -9,6 +9,9 @@ gpio.init()
 gpio.setcfg(pin_SLC, gpio.OUTPUT)
 gpio.setcfg(pin_SDO, gpio.INPUT)
 
+
+
+
 def START():
 	xkeySTAT = 0;
 	while True:

@@ -8,8 +8,8 @@ import MAXIOT
 import threading
 import time
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START USER START
-import ILI9341
-import GUI
+#import ILI9341
+#import GUI
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 ##############################################
 USER_STATUS=0
@@ -38,8 +38,8 @@ class mem_userThread(threading.Thread):
 				#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START
 				while(RX_FIFO_Len()):
 					d = RX_FIFO_Get()
-					if(USR_dbg==1):print "--> LCD : " + str(d)
-					GUI.Text(d)
+					#if(USR_dbg==1):print "--> LCD : " + str(d)
+					#GUI.Text(d)
 				#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 			else:
 				if(MEM_USER_STATUS==0):break
@@ -70,8 +70,8 @@ class userThread(threading.Thread):
 				#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START
 				while(RX_FIFO_Len()):
 					d = RX_FIFO_Get()
-					if(USR_dbg==1):print "--> LCD : " + str(d)
-					GUI.Text(d)
+					#if(USR_dbg==1):print "--> LCD : " + str(d)
+					#GUI.Text(d)
 				#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 			else:
 				if(USER_STATUS==0):break
@@ -84,7 +84,7 @@ class userThread(threading.Thread):
 def START():
 	RX_FIFO_init()
 	#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START
-	GUI.init()
+	#GUI.init()
 	#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 	global USER_STATUS
 	global MEM_USER_STATUS
