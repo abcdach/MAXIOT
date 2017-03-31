@@ -1,5 +1,5 @@
 ##############################################
-# v0.02			export PS1='> '
+# v0.03			export PS1='> '
 ##############################################
 import sys
 sys.path.append('USER')
@@ -7,11 +7,7 @@ import re
 import MAXIOT
 import threading
 import time
-#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START USER START
-import ILI9341
-import GUI
 import USER_BRIDGE
-#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 ##############################################
 USER_STATUS=0
 MEM_USER_STATUS=0
@@ -82,10 +78,7 @@ class userThread(threading.Thread):
 
 def START():
 	RX_FIFO_init()
-	#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START
 	USER_BRIDGE.RUN_INIT()
-	#GUI.init()
-	#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 	global USER_STATUS
 	global MEM_USER_STATUS
 	USER_STATUS     = 1

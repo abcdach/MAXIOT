@@ -1,4 +1,7 @@
 import MEDIATOR
+import time
+#############################################
+
 
 import ILI9341
 import GUI
@@ -18,6 +21,19 @@ def RUN_DATA_PROCESSING(DATA):
 
 
 
+
+
+
+#############################################
+#def RUN_INIT():
+#	time.sleep(0.2)
+#############################################	
+#def RUN_MEM_DATA_PROCESSING(DATA):
+#	time.sleep(0.2)
+#############################################
+#def RUN_DATA_PROCESSING(DATA):
+#	time.sleep(0.2)
+#############################################
 
 
 
