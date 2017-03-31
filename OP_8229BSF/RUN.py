@@ -1,5 +1,5 @@
 ##############################################
-# v0.02			export PS1='> '
+# v0.03			export PS1='> '
 ##############################################
 #data1 = str(sys.argv[1])
 #data2 = str(sys.argv[2])
@@ -10,12 +10,10 @@
 #if(MAX_dbg==1):print ( data3 )
 #if(MAX_dbg==1):print ( data4 )
 ##############################################
+import MAXIOT_CONFIG
 import time
 import MAXIOT
 import MEDIATOR
-import commands
-#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START USER START
-#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 ##############################################
 SYS_dbg = 1
 ##############################################
@@ -28,18 +26,16 @@ try:
 	MEDIATOR.START()
 	time.sleep(0.2)
 	########################
-	MAXIOT.reconnect		  =  1
-	#MAXIOT.Server_IP         = "10.0.0.13"
-	MAXIOT.Server_IP          =  commands.getoutput("hostname -I")
-	MAXIOT.Server_PORT        =  3004
-	MAXIOT.DEVICE_NAME        = "9001"
-	MAXIOT.DEVICE_DESCRIPTION = "Capacitive Touch"
+	MAXIOT.reconnect		  = MAXIOT_CONFIG.reconnect
+	MAXIOT.Server_IP          = MAXIOT_CONFIG.Server_IP
+	MAXIOT.Server_PORT        = MAXIOT_CONFIG.Server_PORT
+	MAXIOT.DEVICE_NAME        = MAXIOT_CONFIG.DEVICE_NAME
+	MAXIOT.DEVICE_DESCRIPTION = MAXIOT_CONFIG.DEVICE_DESCRIPTION
 	MAXIOT.START()
 	########################
 	while 1:
 		time.sleep(0.001)
-		####################################################
-		
+		####################################################	
 		if(MAXIOT.reconnect==1):
 			if(MAXIOT.CLIENT_STATUS==0):
 				time.sleep(1)
@@ -76,6 +72,7 @@ finally:
 	MAXIOT.PING_STATUS       = 0
 	MEDIATOR.USER_STATUS     = 0
 	MEDIATOR.MEM_USER_STATUS = 0
+	MEDIATOR.USER_LOOP       = 0 
 
 
 
