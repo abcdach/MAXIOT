@@ -7,50 +7,115 @@ import threading
 import time
 
 USER_STATUS=0
-event_is_set = 0
-RX_DATA = "  "
-MED_dbg = 1
+MEM_USER_STATUS=0
+MED_dbg = 0
+USR_dbg = 1
+
+class mem_userThread(threading.Thread):
+	def __init__(self, threadID, name):
+		threading.Thread.__init__(self)
+		self.threadID = threadID
+		self.name = name
+	def run(self):
+		if(MED_dbg==1):print "###################################"
+		if(MED_dbg==1):print "... MED : MEM : USER START !!!"
+		if(MED_dbg==1):print "###################################"
+		global MEM_USER_STATUS
+		while 1:
+			global mem_user_event_is_set
+			if(MED_dbg==1):print "... MED : MEM : EVENT : wait"
+			mem_user_event_is_set = mem_userEvent.wait(3)			
+			if(MEM_USER_STATUS==0):break
+			if mem_user_event_is_set:
+				if(MED_dbg==1):print "... MED : MEM : EVENT : detected !!!"
+				mem_userEvent.clear()
+				################################################
+				while(fifo.Len()):
+					d = fifo.Get()
+					if(USR_dbg==1):print "--> LCD : " + str(d)
+					Text(d)
+				################################################
+			else:
+				if(MEM_USER_STATUS==0):break
+		if(MED_dbg==1):print "###################################"
+		if(MED_dbg==1):print "... MED : MEM : USER STOP !!!"
+		if(MED_dbg==1):print "###################################"
+		MEM_USER_STATUS = 0
+
 
 class userThread(threading.Thread):
 	def __init__(self, threadID, name):
 		threading.Thread.__init__(self)
 		self.threadID = threadID
 		self.name = name
-		ILI9341.INIT()
-		ILI9341.CLS3()
 	def run(self):
+		if(MED_dbg==1):print "###################################"
+		if(MED_dbg==1):print "... MED : ... : USER START !!!"
+		if(MED_dbg==1):print "###################################"
 		global USER_STATUS
 		while 1:
-			if(MED_dbg==1):print "... UZR : EVENT : wait"
-			event_is_set = e.wait(1)			
+			global user_event_is_set
+			if(MED_dbg==1):print "... MED : ... : EVENT : wait"
+			user_event_is_set = userEvent.wait(3)			
 			if(USER_STATUS==0):break
-			if event_is_set:
-				if(MED_dbg==1):print "... UZR : EVENT : detected !!!"
-				e.clear()
+			if user_event_is_set:
+				if(MED_dbg==1):print "... MED : ... : EVENT : detected !!!"
+				userEvent.clear()
+				################################################
 				while(fifo.Len()):
 					d = fifo.Get()
-					print "... LCD : " + str(d)
+					if(USR_dbg==1):print "--> LCD : " + str(d)
 					Text(d)
+				################################################
 			else:
 				if(USER_STATUS==0):break
+		if(MED_dbg==1):print "###################################"
+		if(MED_dbg==1):print "... MED : ... : USER STOP !!!"
+		if(MED_dbg==1):print "###################################"
 		USER_STATUS = 0
 
 
 def START():
-	global e
-	e = threading.Event()
+	################################################
+	ILI9341.INIT()
+	ILI9341.CLS3()
+	ILI9341.CLS3()
+	################################################
+	global USER_STATUS
+	global MEM_USER_STATUS
+	USER_STATUS     = 1
+	MEM_USER_STATUS = 1
+	################################################
+	time.sleep(0.2)	
+	global userEvent
+	userEvent = threading.Event()
 	_userThread = userThread(1, "userThread")
-	_userThread.start()   
+	_userThread.start()
+	################################################
+	time.sleep(0.2)
+	global mem_userEvent
+	mem_userEvent = threading.Event()
+	_mem_userThread = mem_userThread(1, "mem_userThread")
+	_mem_userThread.start()
+	################################################	   
 
-def RX(_SLOT,_DATA):
+def MEM_RX(_SLOT,_DATA):#damaxsovrebuli monacemebis migeba
+	SLOT = str(_SLOT)
+	DATA = str(_DATA)
+	if(MED_dbg==1):print "... MED : MEM_RX("+SLOT+") "+DATA
+	fifo.Put(DATA)
+	if(MED_dbg==1):print "... MED : MEM : Event --> "
+	mem_userEvent.set()
+
+def RX(_SLOT,_DATA):#pirdapiri monacemebis migeba
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
 	if(MED_dbg==1):print "... MED : RX("+SLOT+") "+DATA
 	fifo.Put(DATA)
 	if(MED_dbg==1):print "... MED : Event --> "
-	e.set()
+	userEvent.set()
 
-def TX(_SLOT,_DATA):
+def TX(_SLOT,_DATA):#gadasacemi monacemebis porti
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
 	print "<-- S("+SLOT+") "+DATA

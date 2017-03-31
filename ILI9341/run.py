@@ -22,6 +22,9 @@ try:
 	if(SYS_dbg==1):print "###################################"
 	fifo.init()
 	########################
+	MEDIATOR.START()
+	time.sleep(0.2)
+	########################
 	MAXIOT.reconnect		   =  1
 	#MAXIOT.Server_IP          = "10.0.0.13"
 	MAXIOT.Server_IP          =  commands.getoutput("hostname -I")
@@ -29,9 +32,6 @@ try:
 	MAXIOT.DEVICE_NAME        = "9002"
 	MAXIOT.DEVICE_DESCRIPTION = "LCD ILI9341"
 	MAXIOT.START()
-	########################
-	MEDIATOR.USER_STATUS = 1
-	MEDIATOR.START()
 	########################
 	while 1:
 		time.sleep(0.001)
@@ -70,9 +70,10 @@ finally:
 	if(SYS_dbg==1):print "###################################"
 	if(SYS_dbg==1):print "... MAX : SYSTEM STOP !!!"
 	if(SYS_dbg==1):print "###################################"
-	MAXIOT.CLIENT_STATUS = 0
-	MAXIOT.PING_STATUS   = 0
-	MEDIATOR.USER_STATUS = 0
+	MAXIOT.CLIENT_STATUS     = 0
+	MAXIOT.PING_STATUS       = 0
+	MEDIATOR.USER_STATUS     = 0
+	MEDIATOR.MEM_USER_STATUS = 0
 
 
 

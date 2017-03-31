@@ -115,24 +115,29 @@ class clientThread (threading.Thread):
 							json_data = json.loads(sub_data)
 							N_VEL = int(json_data["N"])
 							#-------------------------------
-							if(N_VEL==1):
+							if(N_VEL==1):# mowyobiobis parametrebis gadacema
 								data = "{\"N\":\"1\",\"D\":\""+DEVICE_NAME+"\",\"V\":\""+DEVICE_DESCRIPTION+"\"}"
 								sock.sendall(data)
 								if(MAX_dbg==1):print("<-- MAX : "+data)
 							#-------------------------------			
-							if(N_VEL==0):
+							if(N_VEL==0):# pirdapiri onacemebis migeba
 								V_VEL = str(json_data["V"])
 								S_VEL = str(json_data["S"])
 								MEDIATOR.RX(S_VEL,V_VEL)
-								#if(MAX_dbg==1):print str(V_VEL)
-								#if(MAX_dbg==1):print str(S_VEL)
-							#-------------------------------	
-							if(N_VEL==2):
+							#-------------------------------
+							if(N_VEL==4):# damaxsovrebuli monacemebis migeba
+								V_VEL = str(json_data["V"])
+								S_VEL = str(json_data["S"])
+								MEDIATOR.MEM_RX(S_VEL,V_VEL)
+								if(MAX_dbg==1):print "MEM:"+str(V_VEL)
+								if(MAX_dbg==1):print "MEM:"+str(S_VEL)
+							#-------------------------------		
+							if(N_VEL==2):# daregistrirebis dasturi
 								PING_STATUS = 1
 								PING = pingThread(1, "MAX_PING", 1)
 								PING.start()
 							#-------------------------------			
-							#if(N_VEL==7):
+							#if(N_VEL==7):# pingi
 								#data = "{\"N\":\"8\",\"i\":\"PING\"}"
 								#sock.sendall(data)
 								#if(MAX_dbg==1):print("<-- MAX : "+data)
