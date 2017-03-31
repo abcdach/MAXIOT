@@ -1,5 +1,5 @@
 
-MyFifo_MaxLen = 32
+MyFifo_MaxLen = 64
 MyFifo = [""] * MyFifo_MaxLen
 MyFifo_X = 0
 MyFifo_Y = 0

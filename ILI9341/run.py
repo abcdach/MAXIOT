@@ -1,3 +1,6 @@
+##############################################
+# v0.02			export PS1='> '
+##############################################
 #data1 = str(sys.argv[1])
 #data2 = str(sys.argv[2])
 #data3 = str(sys.argv[3])
@@ -12,7 +15,6 @@ import time
 import MAXIOT
 import MEDIATOR
 import commands
-import fifo
 SYS_dbg = 1
 
 try:
@@ -20,7 +22,6 @@ try:
 	if(SYS_dbg==1):print "###################################"
 	if(SYS_dbg==1):print "... SYS : SYSTEM START !!!"
 	if(SYS_dbg==1):print "###################################"
-	fifo.init()
 	########################
 	MEDIATOR.START()
 	time.sleep(0.2)
@@ -57,14 +58,13 @@ try:
 				print "... MAX : RECONNECTING !!!"
 				MAXIOT.START()
 	
-		####################################################
-		
+		#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
 #		while(fifo.Len()):
 #			d = fifo.Get()
 #			print "... LCD : " + str(d)
 #			MEDIATOR.Text(d)
-
-		####################################################	
+		#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
+	
 
 finally:
 	if(SYS_dbg==1):print "###################################"
