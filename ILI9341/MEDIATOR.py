@@ -6,66 +6,65 @@ import fifo
 import threading
 import time
 
-DevThread_STATUS=0
+USER_STATUS=0
 event_is_set = 0
-DataEvent = 0
 RX_DATA = "  "
 MED_dbg = 1
 
-class DevThread (threading.Thread):
-	def __init__(self, threadID, name, DataEvent):
+class userThread(threading.Thread):
+	def __init__(self, threadID, name):
 		threading.Thread.__init__(self)
 		self.threadID = threadID
 		self.name = name
 		ILI9341.INIT()
 		ILI9341.CLS3()
 	def run(self):
-		global DevThread_STATUS
+		global USER_STATUS
 		while 1:
-#			print "wait_for_event starting !!!!!!"
+			if(MED_dbg==1):print "... UZR : EVENT : wait"
 			event_is_set = e.wait(1)			
-			if(DevThread_STATUS==0):break
+			if(USER_STATUS==0):break
 			if event_is_set:
-				print ":))))))"
+				if(MED_dbg==1):print "... UZR : EVENT : detected !!!"
 				e.clear()
-#				while(fifo.Len()):
-#					d = fifo.Get()
-#					print "xxxxx = " + str(d)
-#					Text(d)
-#					time.sleep(0.01)
-#			else:
-#				print ":("
-		DevThread_STATUS = 0
-
-
-		
-
-
+				while(fifo.Len()):
+					d = fifo.Get()
+					print "... LCD : " + str(d)
+					Text(d)
+			else:
+				if(USER_STATUS==0):break
+		USER_STATUS = 0
 
 
 def START():
-	global DataEvent
-	DataEvent = 0
 	global e
 	e = threading.Event()
-	global DataEvent
-	DataEvent = 0
-	xSATELIT = DevThread(1, "Thread-1", DataEvent)
-	xSATELIT.start()   
-	#time.sleep(10)
-	#e.set()
+	_userThread = userThread(1, "userThread")
+	_userThread.start()   
 
 def RX(_SLOT,_DATA):
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
-	if(MED_dbg==1):print "--> S("+SLOT+") "+DATA
+	if(MED_dbg==1):print "... MED : RX("+SLOT+") "+DATA
 	fifo.Put(DATA)
-	global DataEvent
-	if(DataEvent==0):
-		RX_DATA = DATA
-		DataEvent = 1
+	if(MED_dbg==1):print "... MED : Event --> "
 	e.set()
-	#Text(DATA)
+
+def TX(_SLOT,_DATA):
+	SLOT = str(_SLOT)
+	DATA = str(_DATA)
+	print "<-- S("+SLOT+") "+DATA
+	MAXIOT.SEND(SLOT,DATA)
+
+
+
+
+
+
+
+
+
+
 	
 def ToCOLOR(color):
 	if   color == "C1":return ILI9341.RED
@@ -123,11 +122,7 @@ def Text(DATA):
 
 	
 	
-def TX(_SLOT,_DATA):
-	SLOT = str(_SLOT)
-	DATA = str(_DATA)
-	print "<-- S("+SLOT+") "+DATA
-	MAXIOT.SEND(SLOT,DATA)
+
 
 
 
