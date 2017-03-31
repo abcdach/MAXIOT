@@ -9,14 +9,16 @@
 #if(MAX_dbg==1):print ( data2 )
 #if(MAX_dbg==1):print ( data3 )
 #if(MAX_dbg==1):print ( data4 )
-
-
+##############################################
 import time
 import MAXIOT
 import MEDIATOR
 import commands
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START USER START
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
+##############################################
 SYS_dbg = 1
-
+##############################################
 try:
 	print "\n\n\n"
 	if(SYS_dbg==1):print "###################################"
@@ -26,8 +28,8 @@ try:
 	MEDIATOR.START()
 	time.sleep(0.2)
 	########################
-	MAXIOT.reconnect		   =  1
-	#MAXIOT.Server_IP          = "10.0.0.13"
+	MAXIOT.reconnect		  =  1
+	#MAXIOT.Server_IP         = "10.0.0.13"
 	MAXIOT.Server_IP          =  commands.getoutput("hostname -I")
 	MAXIOT.Server_PORT        =  3004
 	MAXIOT.DEVICE_NAME        = "9002"

@@ -1,4 +1,3 @@
-
 import time
 import ILI9341
 

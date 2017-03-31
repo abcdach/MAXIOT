@@ -1,21 +1,21 @@
 ##############################################
 # v0.02			export PS1='> '
 ##############################################
+import sys
+sys.path.append('USER')
 import re
 import MAXIOT
 import threading
 import time
-
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER START USER START
 import ILI9341
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#| USER END
-
-
+##############################################
 USER_STATUS=0
 MEM_USER_STATUS=0
 MED_dbg = 0
 USR_dbg = 1
-
+##############################################
 class mem_userThread(threading.Thread):
 	def __init__(self, threadID, name):
 		threading.Thread.__init__(self)

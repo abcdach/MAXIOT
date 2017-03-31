@@ -1,17 +1,16 @@
-import sys
-sys.path.append('FONTS')
-
 from pyA20 import spi
 from pyA20.gpio import gpio
 from pyA20.gpio import port
+
+
 import time
 from Config import *
-from arial_normal import *
-from arial_bold   import *
-from GroteskBold16x32 import *
-from GroteskBold24x48 import *
-from GroteskBold32x64 import *
-from SevenSegmentFull import *
+from FONTS.arial_bold       import *
+from FONTS.arial_normal     import *
+from FONTS.GroteskBold16x32 import *
+from FONTS.GroteskBold24x48 import *
+from FONTS.GroteskBold32x64 import *
+from FONTS.SevenSegmentFull import *
 
 spi.close()
 spi.open(spi_dev, mode=0, delay=0, bits_per_word=8, speed=spi_speed)
