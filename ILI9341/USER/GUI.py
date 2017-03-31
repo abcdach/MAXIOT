@@ -29,7 +29,6 @@ def ToCOLOR(color):
 
 
 def Text(DATA):
-
  	DAT = re.split(r',',DATA)
  	Array_len  = len(DAT)
  	

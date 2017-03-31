@@ -28,7 +28,7 @@ clear
 #exit 1
 git config --global user.email "d.chkhaidze@gmail.com"
 git config --global user.name  "abcdach"
-git remote add origin https://github.com/abcdach/PyDev_OP.git
+git remote add origin https://github.com/abcdach/MAXIOT_PyDev
 git add -A
 git status
 git commit -m "first commit"
