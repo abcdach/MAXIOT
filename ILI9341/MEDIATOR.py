@@ -10,7 +10,7 @@ DevThread_STATUS=0
 event_is_set = 0
 DataEvent = 0
 RX_DATA = "  "
-
+MED_dbg = 1
 
 class DevThread (threading.Thread):
 	def __init__(self, threadID, name, DataEvent):
@@ -22,7 +22,7 @@ class DevThread (threading.Thread):
 	def run(self):
 		global DevThread_STATUS
 		while 1:
-			print "wait_for_event starting !!!!!!"
+#			print "wait_for_event starting !!!!!!"
 			event_is_set = e.wait(1)			
 			if(DevThread_STATUS==0):break
 			if event_is_set:
@@ -33,8 +33,8 @@ class DevThread (threading.Thread):
 #					print "xxxxx = " + str(d)
 #					Text(d)
 #					time.sleep(0.01)
-			else:
-				print ":("
+#			else:
+#				print ":("
 		DevThread_STATUS = 0
 
 
@@ -58,7 +58,7 @@ def START():
 def RX(_SLOT,_DATA):
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
-	print "--> S("+SLOT+") "+DATA
+	if(MED_dbg==1):print "--> S("+SLOT+") "+DATA
 	fifo.Put(DATA)
 	global DataEvent
 	if(DataEvent==0):
