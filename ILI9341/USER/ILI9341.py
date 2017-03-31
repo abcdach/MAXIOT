@@ -1,26 +1,24 @@
-#from pyA20 import spi
-#from pyA20.gpio import gpio
-#from pyA20.gpio import port
-
-
-import time
+##############################################
+# v0.01			export PS1='> '
+##############################################
 from Config import *
+import time
 from FONTS.arial_bold       import *
 from FONTS.arial_normal     import *
 from FONTS.GroteskBold16x32 import *
 from FONTS.GroteskBold24x48 import *
 from FONTS.GroteskBold32x64 import *
 from FONTS.SevenSegmentFull import *
-
+##############################################
 spi.close()
 spi.open(spi_dev, mode=0, delay=0, bits_per_word=8, speed=spi_speed)
-
+##############################################
 gpio.init()
 gpio.setcfg(pin_LED, gpio.OUTPUT)
 gpio.setcfg(pin_RST, gpio.OUTPUT)
 gpio.setcfg(pin_DC,  gpio.OUTPUT)
 gpio.setcfg(pin_CS,  gpio.OUTPUT)
-
+##############################################
 RED     = 0xf800
 GREEN   = 0x07e0
 BLUE    = 0x001f
@@ -31,7 +29,7 @@ CYAN    = 0x07ff
 BRIGHT_RED = 0xf810
 GRAY1   = 0x8410
 GRAY2   = 0x4208
-
+##############################################
 
 
 
