@@ -27,7 +27,7 @@ def RUN_DATA_PROCESSING(DATA):
 #############################################
 def RUN_LOOP():
 	global counter
-	time.sleep(0.1)
+	time.sleep(0.3)
 	#print "LOOP"
 	MIFAREReader.MFRC522_Init()
 	(status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
@@ -43,6 +43,7 @@ def RUN_LOOP():
 		RFID_DATA = str(backData[0])+","+str(backData[1])+","+str(backData[2])+","+str(backData[3])+","+str(backData[4])
 		print "Card read UID: "+RFID_DATA
 		MEDIATOR.TX(0,RFID_DATA)
+		time.sleep(1)
 
 
 def end_read(signal, frame):
