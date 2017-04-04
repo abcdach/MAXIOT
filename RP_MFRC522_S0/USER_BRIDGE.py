@@ -40,10 +40,21 @@ def RUN_LOOP():
 	(status,backData) = MIFAREReader.MFRC522_Anticoll()
   
 	if status == MIFAREReader.MI_OK:
-		RFID_DATA = str(backData[0])+","+str(backData[1])+","+str(backData[2])+","+str(backData[3])+","+str(backData[4])
-		print "Card read UID: "+RFID_DATA
-		MEDIATOR.TX(0,RFID_DATA)
-		time.sleep(1)
+	    v0 = "%0.2X" % backData[0]
+	    v1 = "%0.2X" % backData[1]
+	    v2 = "%0.2X" % backData[2]
+	    v3 = "%0.2X" % backData[3]
+	    v4 = "%0.2X" % backData[4]
+	    RFID_DATA = v0+v1+v2+v3#+v4
+	
+	    print "Card read UID: "+RFID_DATA
+	    MEDIATOR.TX(0,RFID_DATA)
+	    time.sleep (0.5)
+
+#		RFID_DATA = str(backData[0])+","+str(backData[1])+","+str(backData[2])+","+str(backData[3])+","+str(backData[4])
+#		print "Card read UID: "+RFID_DATA
+#		MEDIATOR.TX(0,RFID_DATA)
+#		time.sleep(1)
 
 
 def end_read(signal, frame):
