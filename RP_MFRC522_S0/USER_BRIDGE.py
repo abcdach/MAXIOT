@@ -49,7 +49,7 @@ def RUN_LOOP():
 	
 	    print "Card read UID: "+RFID_DATA
 	    MEDIATOR.TX(0,RFID_DATA)
-	    time.sleep (0.5)
+	    time.sleep (1.5)
 
 #		RFID_DATA = str(backData[0])+","+str(backData[1])+","+str(backData[2])+","+str(backData[3])+","+str(backData[4])
 #		print "Card read UID: "+RFID_DATA

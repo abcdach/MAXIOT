@@ -13,7 +13,7 @@ DevList[0]="0,OP_ILI9341"
 DevList[1]="0,OP_8229BSF"
 DevList[2]="1,RP_MFRC522_S0"
 DevList[3]="1,RP_MFRC522_S1"
-
+DevList[4]="1,RP_RELAY"
 ##############################################
 Path = os.path.dirname(os.path.realpath(__file__))
 #print Path
