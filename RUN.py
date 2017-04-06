@@ -14,7 +14,8 @@ DevList[1]="0,P,OPp_8229BSF,"
 DevList[2]="1,P,RPp_MFRC522_S0,xxx"
 DevList[3]="1,P,RPp_MFRC522_S1,"
 DevList[4]="1,P,RPp_RELAY,"
-DevList[5]="1,C,Uc_MIZ_1,"
+DevList[5]="1,P,Up_Host_IP,"
+DevList[6]="1,C,Uc_MIZ_1,"
 ##############################################
 Path = os.path.dirname(os.path.realpath(__file__))
 #print Path
@@ -24,6 +25,7 @@ commands.getoutput("screen -S OPp_8229BSF    -X quit")
 commands.getoutput("screen -S RPp_MFRC522_S0 -X quit")
 commands.getoutput("screen -S RPp_MFRC522_S1 -X quit")
 commands.getoutput("screen -S RPp_RELAY      -X quit")
+commands.getoutput("screen -S Up_Host_IP      -X quit")
 commands.getoutput("screen -S Uc_MIZ_1       -X quit")
 time.sleep(1)
 ##############################################
