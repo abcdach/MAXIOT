@@ -1,7 +1,7 @@
 
 
 
-printf("--> SYS : %s\n\r",MAXIOT.Server_message);
+if(SYS_DEB==1)printf("--> SYS : %s\n\r",MAXIOT.Server_message);
 //####################################################
 MAXIOT.CONNECTION_STATUS = 1;
 //####################################################

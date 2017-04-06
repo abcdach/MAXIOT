@@ -16,14 +16,16 @@
 	#include <unistd.h>
 	#include <pthread.h>
 	#include <sys/time.h>
+	#include <fcntl.h>   /* open(), creat() - and fcntl() */
 //#------------------------------------------------
 	#include "../TOOLS/json/JSON.h"
 	#include "MAXIOT.h"
+	#include "../PAYLOAD/PAYLOAD.h"
 //#------------------------------------------------
 	MAXIOT_STRUCT MAXIOT;
 //#------------------------------------------------
 	#define SENT_TO_IOT(...)	sprintf(MAXIOT.client_message,__VA_ARGS__);\
-								printf("<-- SYS : %s\n\r",MAXIOT.client_message);\
+								if(SYS_DEB==1)printf("<-- SYS : %s\n\r",MAXIOT.client_message);\
 								send(MAXIOT.SOCK , MAXIOT.client_message , strlen(MAXIOT.client_message) , 0);
 
 	#define JSON_parse(x)		if ((JSON_Len = JSON_Parser(MAXIOT.Server_message,x,JSON_Value))!=-1){\
@@ -34,7 +36,7 @@
 								JSON_STATUS = 1;\
 				    	   	   }else JSON_STATUS = -3;
 //#------------------------------------------------
-
+char SYS_DEB = 0;
 void *MAXIOT_SYSTEM(void *arg){
 	while( 1 ){
 		//###########################################################################################
@@ -56,6 +58,7 @@ void *MAXIOT_SYSTEM(void *arg){
 			printf("-------------------------------------------\n\r");
 		//###########################################################################################
 			MAXIOT.SOCK = socket(AF_INET , SOCK_STREAM , 0);
+			fcntl(MAXIOT.SOCK, F_SETFL, O_NONBLOCK);// setup non blocking socket
 			if (MAXIOT.SOCK == -1){
 				printf("Could not create socket");
 			}
@@ -70,9 +73,10 @@ void *MAXIOT_SYSTEM(void *arg){
 		//###########################################################################################
 			while( 1 ){
 				SOCK_STATUS=0;
+				printf("... SYS : connect to server\n\r");
 				if (connect(MAXIOT.SOCK , (struct sockaddr *)&server , sizeof(server)) < 0)
 				{
-					puts("connect error");
+					printf("... SYS : connect error !!!\n\r");
 					SOCK_STATUS = 1;
 				}
 				if(SOCK_STATUS==0)break;
@@ -89,7 +93,7 @@ void *MAXIOT_SYSTEM(void *arg){
 					break;
 				case 0:// Timeout
 					MAXIOT.TimeOUT ++;
-					printf("... SYS : TimeOUT : %d\n\r",MAXIOT.TimeOUT);
+					if(SYS_DEB==1)printf("... SYS : TimeOUT : %d\n\r",MAXIOT.TimeOUT);
 					if(MAXIOT.TimeOUT==MAXIOT.TimeOUT_MAX) STATUS=255;
 					break;
 				default:
@@ -115,13 +119,13 @@ void *MAXIOT_SYSTEM(void *arg){
 									break;
 								case 3:break;
 								case 4:// bolo migebuli damaxsovrebuli imformacia
-									printf("... SYS : case(4)\n\r");
-									printf("--> SYS : %s\n\r",MAXIOT.Server_message);
+									if(SYS_DEB==1)printf("... SYS : case(4)\n\r");
+									if(SYS_DEB==1)printf("--> SYS : %s\n\r",MAXIOT.Server_message);
 									break;
 								case 5:break;
 								case 6:break;
 								case 7:
-									printf("--> SYS : %s\n\r",MAXIOT.Server_message);
+									if(SYS_DEB==1)printf("--> SYS : %s\n\r",MAXIOT.Server_message);
 									break;
 								case 8:break;
 								case 9://"Error"
@@ -184,7 +188,7 @@ int DATA_TO_IOT(unsigned char SLOT, char *DATA){
 
 void MAXIOT_INIT(char *IOT_IP,int IOT_PORT){
 	//####################################################
-	snprintf(MAXIOT.DEV_DESCRIPTION,64,"X Sensor");
+	snprintf(MAXIOT.DEV_DESCRIPTION,64,"X SERVER");
 	snprintf(MAXIOT.IP,64,"%s",IOT_IP);
 	MAXIOT.PORT = IOT_PORT;
 	MAXIOT.DEV  = 755;
