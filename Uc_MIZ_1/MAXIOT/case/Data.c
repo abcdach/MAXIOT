@@ -29,7 +29,24 @@ if (JSON_STATUS == 1){
 				PAYLOAD_DATA2[12]= Buffer_1[9];
 				DATA_TO_PAYLOAD(0x01,PAYLOAD_DATA2);
 				break;
-			case 1: printf("... SYS : IN1 : %s\n\r",Buffer_1); break;
+			case 1:
+				printf("-------------------------------------\n\r");
+				printf("... SYS : IN1 : %s\n\r",Buffer_1);
+				PAYLOAD_DATA2[0] = 3;//COMMAND
+				PAYLOAD_DATA2[1] = 11;//DATA_LEN
+				PAYLOAD_DATA2[2] = 1;//baratis wamkitxveli
+				PAYLOAD_DATA2[3] = Buffer_1[0];
+				PAYLOAD_DATA2[4] = Buffer_1[1];
+				PAYLOAD_DATA2[5] = Buffer_1[2];
+				PAYLOAD_DATA2[6] = Buffer_1[3];
+				PAYLOAD_DATA2[7] = Buffer_1[4];
+				PAYLOAD_DATA2[8] = Buffer_1[5];
+				PAYLOAD_DATA2[9] = Buffer_1[6];
+				PAYLOAD_DATA2[10]= Buffer_1[7];
+				PAYLOAD_DATA2[11]= Buffer_1[8];
+				PAYLOAD_DATA2[12]= Buffer_1[9];
+				DATA_TO_PAYLOAD(0x01,PAYLOAD_DATA2);
+				break;
 			case 2: printf("... SYS : IN2 : %s\n\r",Buffer_1); break;
 			case 3: printf("... SYS : IN3 : %s\n\r",Buffer_1); break;
 			case 4: printf("... SYS : IN4 : %s\n\r",Buffer_1); break;

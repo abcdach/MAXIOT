@@ -45,7 +45,7 @@ def RUN_LOOP():
 	    v2 = "%0.2X" % backData[2]
 	    v3 = "%0.2X" % backData[3]
 	    v4 = "%0.2X" % backData[4]
-	    RFID_DATA = v0+v1+v2+v3#+v4
+	    RFID_DATA = v0+v1+v2+v3+v4
 	
 	    print "Card read UID: "+RFID_DATA
 	    MEDIATOR.TX(0,RFID_DATA)
