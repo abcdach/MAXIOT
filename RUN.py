@@ -9,14 +9,21 @@ import time
 DevList = [""]*32
 Data    = [""]*2
 ##############################################
-DevList[0]="0,OP_ILI9341"
-DevList[1]="0,OP_8229BSF"
-DevList[2]="1,RP_MFRC522_S0"
-DevList[3]="1,RP_MFRC522_S1"
-DevList[4]="1,RP_RELAY"
+DevList[0]="0,P,OPp_ILI9341,"
+DevList[1]="0,P,OPp_8229BSF,"
+DevList[2]="1,P,RPp_MFRC522_S0,xxx"
+DevList[3]="1,P,RPp_MFRC522_S1,"
+DevList[4]="1,P,RPp_RELAY,"
 ##############################################
 Path = os.path.dirname(os.path.realpath(__file__))
 #print Path
+##############################################
+commands.getoutput("screen -S OPp_ILI9341    -X quit")
+commands.getoutput("screen -S OPp_8229BSF    -X quit")
+commands.getoutput("screen -S RPp_MFRC522_S0 -X quit")
+commands.getoutput("screen -S RPp_MFRC522_S1 -X quit")
+commands.getoutput("screen -S RPp_RELAY      -X quit")
+time.sleep(1)
 ##############################################
 cou = 0
 while 1:
@@ -27,10 +34,12 @@ while 1:
 	for i in range(len(DevList)):
 		if(len(DevList[i])>0):
 			Data = re.split(',+',DevList[i])
-			if(len(Data)==2):
+			if(len(Data)>2):
 				#print Data
 				screen_comm = str(Data[0])
-				screen_name = str(Data[1])
+				screen_type = str(Data[1])
+				screen_name = str(Data[2])
+				screen_argu = str(Data[3])
 				vel = screen.find(screen_name)
 				if(vel > 0):
 					screen_stat = "1"
@@ -41,13 +50,14 @@ while 1:
 				#print "screen_stat:"+screen_stat
 				if(screen_comm!=screen_stat):
 					if(screen_comm=="1"):
-						print "Need to start : "+screen_name
-						comm = "screen -dmS "+screen_name+" bash -c 'cd "+Path+"/"+screen_name+"/ && python RUN.py'"
-						print comm
-						ddd = commands.getoutput(comm)
-						#print ddd
+						if(screen_type=="P"):
+							print "START : "+screen_name+" "+screen_argu
+							comm = "screen -dmS "+screen_name+" bash -c 'cd "+Path+"/"+screen_name+"/ && python RUN.py "+screen_argu+"'"
+							print comm
+							ddd = commands.getoutput(comm)
+							#print ddd
 					if(screen_comm=="0"):
-						print "Need to stop  : "+screen_name				
+						print "STOP  : "+screen_name				
 						commands.getoutput("screen -S "+screen_name+" -X quit")
 
 
