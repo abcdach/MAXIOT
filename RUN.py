@@ -11,11 +11,11 @@ Data    = [""]*2
 ##############################################
 DevList[0]="0,P,OPp_ILI9341,"
 DevList[1]="0,P,OPp_8229BSF,"
-DevList[2]="1,P,RPp_MFRC522_S0,"
-DevList[3]="1,P,RPp_MFRC522_S1,"
-DevList[4]="1,P,RPp_RELAY,"
-DevList[5]="1,P,Up_Host_IP,"
-DevList[6]="1,C,Uc_MIZ_1,"
+DevList[2]="0,P,RPp_MFRC522_S0,"
+DevList[3]="0,P,RPp_MFRC522_S1,"
+DevList[4]="0,P,RPp_RELAY,"
+DevList[5]="0,P,Up_Host_IP,"
+DevList[6]="0,C,Uc_MIZ_1,"
 ##############################################
 Path = os.path.dirname(os.path.realpath(__file__))
 #print Path
