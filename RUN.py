@@ -68,12 +68,14 @@ while 1:
 							#print comm
 							ddd = commands.getoutput(comm)
 							#print ddd
+							time.sleep(1)
 						if(screen_type=="C"):#C
 							print "START : "+screen_name+" "+screen_argu
 							comm = "screen -dmS "+screen_name+" bash -c 'cd "+Path+"/"+screen_name+"/ && ./RUN "+screen_argu+"'"
 							#print comm
 							ddd = commands.getoutput(comm)
 							#print ddd
+							time.sleep(1)
 						if(screen_type=="GUI"):#C
 							print "START : "+screen_name+" "+screen_argu
 							comm = "screen -dmS "+screen_name+" bash -c 'cd "+Path+"/"+screen_name+"/ && ./RUN.sh "+screen_argu+"'"
