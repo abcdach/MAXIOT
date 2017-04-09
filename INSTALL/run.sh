@@ -14,8 +14,8 @@ choice=$(whiptail --title "MAXIOT TOOLS" --menu "     " 14 48 3 \
 option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
 case "${option}" in
     1) 
-        chmod +x Scripts/main.sh
-        ./Scripts/main.sh
+        chmod +x main.sh
+        ./main.sh
     ;;
     2)
     	echo "$(tput setaf 2)";

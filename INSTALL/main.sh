@@ -14,12 +14,12 @@ choice=$(whiptail --title "MAXIOT" --menu "Make a choice :" 14 48 3 \
 option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
 case "${option}" in
     1) 
-        chmod +x Scripts/update/update.sh
-        Scripts/update/update.sh
+        chmod +x update.sh
+        ./update.sh
     ;;
     2)
-    	chmod +x Scripts/install/install.sh
-        Scripts/install/install.sh
+    	chmod +x install.sh
+        ./install.sh
     ;;
     *)
         exit

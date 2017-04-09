@@ -10,7 +10,7 @@ DevList = [""]*32
 Data    = [""]*2
 ##############################################
 DevList[0]="1,SYS,MAXIOT,"
-DevList[1]="1,GUI,RPb_WebGUI,"
+DevList[1]="0,GUI,RPb_WebGUI,"
 DevList[2]="0,P,OPp_ILI9341,"
 DevList[3]="0,P,OPp_8229BSF,"
 DevList[4]="0,P,RPp_MFRC522_S0,"

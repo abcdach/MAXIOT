@@ -2,8 +2,14 @@
 
 
 #systemctl disable log2ram.service
-
-
+#####################################
+SCRIPT="$(readlink --canonicalize-existing "$0")"
+MY_PATH="$(dirname "$SCRIPT")"
+echo $MY_PATH 
+#####################################
+MY_SUBDIR=$(dirname $MY_PATH)
+echo $MY_SUBDIR
+#####################################
 
 
 
@@ -216,6 +222,39 @@ do
 				cat  /etc/MAXIOT/MySQL.cnf
 				echo "$(tput setaf 2)OK$(tput sgr 0)"			
 				####################################
+				
+				
+
+				##########################
+				rm $MY_PATH/MAXIOT_d 
+				cp $MY_PATH/MAXIOT_d_Template $MY_PATH/MAXIOT_d
+				##########################
+				line='Change_Path'
+				line_new=$MY_SUBDIR
+				sed -i "s|$line|$line_new|g" $MY_PATH/MAXIOT_d
+				##########################
+				/etc/init.d/MAXIOT_d stop
+				rm /etc/init.d/MAXIOT_d 
+				cp $MY_PATH/MAXIOT_d /etc/init.d/MAXIOT_d
+				chmod +x /etc/init.d/MAXIOT_d
+				sysv-rc-conf MAXIOT_d on
+				/etc/init.d/MAXIOT_d start
+				##########################				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				#who -r
 				#sudo service --status-all
 				#sudo /etc/init.d/MAXIOT.d start

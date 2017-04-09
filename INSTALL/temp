@@ -1,29 +1,5 @@
 #!/bin/bash
 
 
-##########################
-SCRIPT="$(readlink --canonicalize-existing "$0")"
-MY_PATH="$(dirname "$SCRIPT")"
-echo $MY_PATH 
-##########################
-MY_SUBDIR=$(dirname $MY_PATH)
-echo $MY_SUBDIR
-##########################
-rm $MY_PATH/MAXIOT_d 
-cp $MY_PATH/MAXIOT_d_Template $MY_PATH/MAXIOT_d
-##########################
-
-#vel="'s/Change_Path/"$MY_SUBDIR"/g'"
-#echo $vel
-#sed -i 's/Change_Path/"$MY_SUBDIR"/g' $MY_PATH/MAXIOT_d 	
-
-
-#'s/\/bash$/\/zsh/p'
-
-
-line='Change_Path'
-line_new=$MY_SUBDIR
-sed -i "s|$line|$line_new|g" $MY_PATH/MAXIOT_d
-
-
-##########################	
+amixer set 'Lineout volume control' 50%
+	
