@@ -1,4 +1,20 @@
-
+#!/usr/bin/python
+#--------------------------------------
+#    ___  ___  _ ____          
+#   / _ \/ _ \(_) __/__  __ __ 
+#  / , _/ ___/ /\ \/ _ \/ // / 
+# /_/|_/_/  /_/___/ .__/\_, /  
+#                /_/   /___/   
+#
+#           bmp180.py
+#  Read data from a digital pressure sensor.
+#
+# Author : Matt Hawkins
+# Date   : 17/02/2017
+#
+# http://www.raspberrypi-spy.co.uk/
+#
+#--------------------------------------
 from pyA20 import i2c
 import time
 from ctypes import c_short
