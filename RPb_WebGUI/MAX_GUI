@@ -1,6 +1,0 @@
-#!/bin/sh
-xset -dpms
-xset s off
-unclutter -idle 1 &
-matchbox-window-manager &
-midori -e Fullscreen -a 001/index.html

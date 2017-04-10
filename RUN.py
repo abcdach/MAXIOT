@@ -66,12 +66,6 @@ def Finde_Dev(dev):
 			return (_Type,_Path)
 	return ("","")
 ##############################################
-
-
-	
-	
-	
-
 (_Dev_Type,_Dev_Path) = Finde_Dev("pOP_ILI9341")
 if(len(_Dev_Path)>0):
 	print _Dev_Type
@@ -114,9 +108,12 @@ DevList[9]="0,pUN_MIZ_1,"
 Path = os.path.dirname(os.path.realpath(__file__))
 #print Path
 ##############################################
-commands.getoutput("screen -S OPy_BMP180    -X quit")
-time.sleep(0.2)
-
+for i in xrange(MAX_DevNum):
+	_dev = MAX_DevList[i][1]
+	print "Kill screen : "+_dev
+	commands.getoutput("screen -S _dev -X quit")
+	time.sleep(0.2)
+	#exit(0)
 ##############################################
 cou = 0
 while 1:
@@ -130,9 +127,8 @@ while 1:
 			if(len(Data)>2):
 				#print Data
 				screen_comm = str(Data[0])
-				#screen_type = str(Data[1])
-				screen_name = str(Data[2])
-				screen_argu = str(Data[3])
+				screen_name = str(Data[1])
+				screen_argu = str(Data[2])
 				vel = screen.find(screen_name)
 				if(vel > 0):
 					screen_stat = "1"
@@ -149,18 +145,18 @@ while 1:
 							if(_Dev_Type=="p"):#Python
 								print "START : "+screen_name+" "+screen_argu
 								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && python RUN.py "+screen_argu+"'"
-								print comm
+								#print comm
 								ddd = commands.getoutput(comm)
 								#print ddd
 								time.sleep(1)
-							if(screen_type=="c"):#C
+							if(_Dev_Type=="c"):#C
 								print "START : "+screen_name+" "+screen_argu
 								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && ./RUN "+screen_argu+"'"
 								#print comm
 								ddd = commands.getoutput(comm)
 								#print ddd
 								time.sleep(1)
-							if(screen_type=="b"):#BASH
+							if(_Dev_Type=="b"):#BASH
 								print "START : "+screen_name+" "+screen_argu
 								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && ./RUN.sh "+screen_argu+"'"
 								#print comm
