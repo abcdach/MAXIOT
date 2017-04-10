@@ -10,28 +10,32 @@ import time
 
 
  
-Dir_Path = os.path.dirname(os.path.realpath(__file__))
-#print Dir_Path
+MAX_SYS_PATH = os.path.dirname(os.path.realpath(__file__))
+MAX_SYS_SUB_PATH = os.path.dirname(MAX_SYS_PATH)
+MAX_SYS_CONFIG_PATH = MAX_SYS_SUB_PATH+"/MAX_CONFIG"
+MAX_DIV_CONFIG_FILE_PATH = MAX_SYS_SUB_PATH+"/MAX_CONFIG/DIV_CONFIG"
+
+
+
+#print MAX_SYS_PATH
+#print MAX_SYS_SUB_PATH
+#print MAX_SYS_CONFIG_PATH
+
+#commands.getoutput("rm -rf "+MAX_SYS_CONFIG_PATH)
 ##############################################
-
-#from os import listdir
-#from os.path import isfile, join
-
-#PATH=Dir_Path+"/"
-#f=[]
-#try:
-#	onlyfiles = [f for f in listdir(PATH) if isfile(join(PATH, f))]
-#	if f:
-#		print "OK"
-#		print onlyfiles
-#	else:
-#		print "Dir is empty"
-#except:
-#	print "DIR ERROR"
-#
-#import glob
-#Dev_List = glob.glob(PATH+"*")
-#print Dev_List
+MAX_SYS_CONFIG_NEW = 0
+if not os.path.exists(MAX_SYS_CONFIG_PATH):
+	os.makedirs(MAX_SYS_CONFIG_PATH)
+	MAX_SYS_CONFIG_NEW = 1
+	print "MAX_SYS_CONFIG : WAS CREATED !!!"
+##############################################
+commands.getoutput("rm -rf "+MAX_DIV_CONFIG_FILE_PATH)
+##############################################
+MAX_DIV_CONFIG_FILE_NEW = 0
+if not os.path.exists(MAX_DIV_CONFIG_FILE_PATH):
+	file(MAX_DIV_CONFIG_FILE_PATH, 'w').close()
+	MAX_DIV_CONFIG_FILE_NEW = 1
+	print "DIV_CONFIG_FILE : WAS CREATED !!!"
 ##############################################
 import glob
 import ntpath
@@ -39,23 +43,37 @@ import ntpath
 MAX_DevList = ["","",""]*256
 MAX_DevNum  = int(0)
 ##############################################
-for Dev_Path in glob.glob(Dir_Path+"/DEV/OP/*"):
+for Dev_Path in glob.glob(MAX_SYS_PATH+"/DEV/OP/*"):
 	Dev_Name = ntpath.basename(Dev_Path)
 	MAX_DevList[MAX_DevNum]=(Dev_Name[0],Dev_Name,Dev_Path+"/")
 	MAX_DevNum=MAX_DevNum+1
 ##############################################
-for Dev_Path in glob.glob(Dir_Path+"/DEV/RP/*"):
+for Dev_Path in glob.glob(MAX_SYS_PATH+"/DEV/RP/*"):
 	Dev_Name = ntpath.basename(Dev_Path)
 	MAX_DevList[MAX_DevNum]=(Dev_Name[0],Dev_Name,Dev_Path+"/")
 	MAX_DevNum=MAX_DevNum+1
 ##############################################
-for Dev_Path in glob.glob(Dir_Path+"/DEV/UN/*"):
+for Dev_Path in glob.glob(MAX_SYS_PATH+"/DEV/UN/*"):
 	Dev_Name = ntpath.basename(Dev_Path)
 	MAX_DevList[MAX_DevNum]=(Dev_Name[0],Dev_Name,Dev_Path+"/")
 	MAX_DevNum=MAX_DevNum+1
 ##############################################
+print
 for i in xrange(MAX_DevNum):
 	print MAX_DevList[i]
+##############################################		
+print		
+if(MAX_DIV_CONFIG_FILE_NEW==1):
+	print "CREATING : DEV_CONFIG FILE !!!"
+	print "------------------------------"
+	f = open(MAX_DIV_CONFIG_FILE_PATH,"a")
+	f.write("1,MAXIOT,\n")
+	for i in xrange(MAX_DevNum):	
+		data = "0,"+MAX_DevList[i][1]+","
+		print data		
+		f.write(data+"\n")
+	f.close()
+	print "------------------------------"		
 ##############################################	
 def Finde_Dev(dev):
 	for i in xrange(MAX_DevNum):
@@ -66,6 +84,7 @@ def Finde_Dev(dev):
 			return (_Type,_Path)
 	return ("","")
 ##############################################
+exit(0)
 (_Dev_Type,_Dev_Path) = Finde_Dev("pOP_ILI9341")
 if(len(_Dev_Path)>0):
 	print _Dev_Type

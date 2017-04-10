@@ -1,5 +1,0 @@
-#!/bin/bash
-
-
-amixer set 'Lineout volume control' 50%
-	
