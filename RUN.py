@@ -36,7 +36,7 @@ Dir_Path = os.path.dirname(os.path.realpath(__file__))
 import glob
 import ntpath
 
-MAX_DevList = ["",""]*256
+MAX_DevList = ["","",""]*256
 MAX_DevNum  = int(0)
 ##############################################
 #print "[OPI : DEVICES]"
@@ -45,8 +45,7 @@ Dev_List = glob.glob(PATH+"*")
 for Dev_Path in Dev_List:
 	#print Dev_Path
 	Dev_Name = ntpath.basename(Dev_Path)
-	#print Dev_Name
-	MAX_DevList[MAX_DevNum]=(Dev_Name,Dev_Path)
+	MAX_DevList[MAX_DevNum]=(Dev_Name[0],Dev_Name,Dev_Path)
 	MAX_DevNum=MAX_DevNum+1
 	#print MAX_DevNum
 ##############################################
@@ -57,7 +56,7 @@ for Dev_Path in Dev_List:
 	#print Dev_Path
 	Dev_Name = ntpath.basename(Dev_Path)
 	#print Dev_Name
-	MAX_DevList[MAX_DevNum]=(Dev_Name,Dev_Path)
+	MAX_DevList[MAX_DevNum]=(Dev_Name[0],Dev_Name,Dev_Path)
 	MAX_DevNum=MAX_DevNum+1
 	#print MAX_DevNum
 ##############################################
@@ -68,7 +67,7 @@ for Dev_Path in Dev_List:
 	#print Dev_Path
 	Dev_Name = ntpath.basename(Dev_Path)
 	#print Dev_Name
-	MAX_DevList[MAX_DevNum]=(Dev_Name,Dev_Path)
+	MAX_DevList[MAX_DevNum]=(Dev_Name[0],Dev_Name,Dev_Path)
 	MAX_DevNum=MAX_DevNum+1
 	#print MAX_DevNum
 ##############################################
