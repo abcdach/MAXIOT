@@ -146,34 +146,30 @@ while 1:
 								print "START : "+screen_name+" "+screen_argu
 								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && python RUN.py "+screen_argu+"'"
 								#print comm
-								ddd = commands.getoutput(comm)
-								#print ddd
+								commands.getoutput(comm)
 								time.sleep(1)
 							if(_Dev_Type=="c"):#C
 								print "START : "+screen_name+" "+screen_argu
 								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && ./RUN "+screen_argu+"'"
 								#print comm
-								ddd = commands.getoutput(comm)
-								#print ddd
+								commands.getoutput(comm)
 								time.sleep(1)
 							if(_Dev_Type=="b"):#BASH
 								print "START : "+screen_name+" "+screen_argu
 								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && ./RUN.sh "+screen_argu+"'"
 								#print comm
-								ddd = commands.getoutput(comm)
-								#print ddd
-								time.sleep(3)
+								commands.getoutput(comm)
+								time.sleep(1)
 							
 							
 							
-						if(screen_name=="MAXIOT"):#
-							#print "START : "+screen_name+" "+screen_argu
+						if(screen_name=="MAXIOT"):
+							print "START : "+screen_name+" "+screen_argu
 							comm = "screen -dmS "+screen_name+" bash -c '/etc/MAXIOT/MAXIOT_SERVER "+screen_argu+"'"
 							print comm
-							ddd = commands.getoutput(comm)
-							#print ddd
+							commands.getoutput(comm)
 							time.sleep(7)							
-							#/etc/MAXIOT/MAXIOT_SERVER
+
 					if(screen_comm=="0"):
 						print "STOP  : "+screen_name				
 						commands.getoutput("screen -S "+screen_name+" -X quit")
