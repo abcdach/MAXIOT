@@ -29,7 +29,7 @@ if not os.path.exists(MAX_SYS_CONFIG_PATH):
 	MAX_SYS_CONFIG_NEW = 1
 	print "MAX_SYS_CONFIG : WAS CREATED !!!"
 ##############################################
-commands.getoutput("rm -rf "+MAX_DIV_CONFIG_FILE_PATH)
+#commands.getoutput("rm -rf "+MAX_DIV_CONFIG_FILE_PATH)
 ##############################################
 MAX_DIV_CONFIG_FILE_NEW = 0
 if not os.path.exists(MAX_DIV_CONFIG_FILE_PATH):
@@ -84,11 +84,11 @@ def Finde_Dev(dev):
 			return (_Type,_Path)
 	return ("","")
 ##############################################
-exit(0)
-(_Dev_Type,_Dev_Path) = Finde_Dev("pOP_ILI9341")
-if(len(_Dev_Path)>0):
-	print _Dev_Type
-	print _Dev_Path
+#exit(0)
+#(_Dev_Type,_Dev_Path) = Finde_Dev("pOP_ILI9341")
+#if(len(_Dev_Path)>0):
+#	print _Dev_Type
+#	print _Dev_Path
 
 ##############################################
 
@@ -127,20 +127,42 @@ DevList[9]="0,pUN_MIZ_1,"
 Path = os.path.dirname(os.path.realpath(__file__))
 #print Path
 ##############################################
-for i in xrange(MAX_DevNum):
-	_dev = MAX_DevList[i][1]
-	print "Kill screen : "+_dev
-	commands.getoutput("screen -S _dev -X quit")
-	time.sleep(0.2)
-	#exit(0)
+#for i in xrange(MAX_DevNum):
+#	_dev = MAX_DevList[i][1]
+#	print "Kill screen : "+_dev
+#	commands.getoutput("screen -S _dev -X quit")
+#	time.sleep(0.2)
+#	#exit(0)
 ##############################################
 cou = 0
+st_mtime_new = ""
+st_mtime_old = ""
 while 1:
+
+	st_mtime_new = os.stat(MAX_DIV_CONFIG_FILE_PATH).st_mtime
+	if(st_mtime_new != st_mtime_old):
+		print "--------------------------"
+		print "READ : DEV_CONFIG FILE !!!"
+		print "--------------------------"
+		st_mtime_old = st_mtime_new
+		with open(MAX_DIV_CONFIG_FILE_PATH) as f:
+			content = f.readlines()
+		content = [x.strip() for x in content]
+		data_cou = 0
+		for data in content:
+			DevList[data_cou]=data
+			data_cou=data_cou+1
+		for i in xrange(data_cou):
+			print DevList[i]			
+		print "--------------------------"
+
+
+
 	cou = cou + 1
 	print "cou:"+str(cou)
 	time.sleep(1)
 	screen = commands.getoutput('screen -ls')
-	for i in range(len(DevList)):
+	for i in range(data_cou):
 		if(len(DevList[i])>0):
 			Data = re.split(',+',DevList[i])
 			if(len(Data)>2):
