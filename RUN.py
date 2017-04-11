@@ -186,7 +186,7 @@ while 1:
 							if(_Dev_Type=="p"):#Python
 								print "START : "+screen_name+" "+screen_argu
 								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && python RUN.py "+screen_argu+"'"
-								print comm
+								#print comm
 								commands.getoutput(comm)
 								time.sleep(1)
 							if(_Dev_Type=="c"):#C
