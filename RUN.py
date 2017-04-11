@@ -179,7 +179,7 @@ while 1:
 				screen_IP     = str(Data[4].strip())
 				screen_PORT   = str(Data[5].strip())
 				
-				screen_NAME = screen_DEVICE+"__"+screen_DESCRI
+				screen_NAME = "MAX_"+screen_ID
 				screen_ARGS = screen_ID+" "+screen_DESCRI+" "+screen_IP+" "+screen_PORT
 				
 				#print "screen_DEVICE : "+screen_DEVICE
@@ -231,7 +231,7 @@ while 1:
 
 					if(screen_ENABLE=="0"):
 						print "STOP  : "+screen_NAME				
-						commands.getoutput("screen -S "+screen_DEVICE+" -X quit")
+						commands.getoutput("screen -S "+screen_NAME+" -X quit")
 
 
 
