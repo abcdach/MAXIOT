@@ -29,7 +29,7 @@ if not os.path.exists(MAX_SYS_CONFIG_PATH):
 	MAX_SYS_CONFIG_NEW = 1
 	print "MAX_SYS_CONFIG : WAS CREATED !!!"
 ##############################################
-commands.getoutput("rm -rf "+MAX_DIV_CONFIG_FILE_PATH)
+#commands.getoutput("rm -rf "+MAX_DIV_CONFIG_FILE_PATH)
 ##############################################
 #MAX_DIV_CONFIG_FILE_NEW = 0
 #if not os.path.exists(MAX_DIV_CONFIG_FILE_PATH):
@@ -139,27 +139,6 @@ def Finde_Dev(dev):
 DevList = [""]*256
 Data    = [""]*2
 ##############################################
-#DevList[0]="1,MAXIOT,,,,,,,,,,"
-#DevList[1]="0,bRP_WebGUI,"
-#DevList[2]="0,pOP_ILI9341,"
-#DevList[3]="0,pOP_8229BSF,"
-#DevList[4]="1,pOP_BMP180,"
-#DevList[5]="0,pRP_MFRC522_S0,"
-#DevList[6]="0,pRP_MFRC522_S1,"
-#DevList[7]="0,pRP_RELAY,"
-#DevList[8]="0,pUN_Host_IP,"
-#DevList[9]="0,pUN_MIZ_1,"
-##############################################
-#Path = os.path.dirname(os.path.realpath(__file__))
-#print Path
-##############################################
-#for i in xrange(MAX_DevNum):
-#	_dev = MAX_DevList[i][1]
-#	print "Kill screen : "+_dev
-#	commands.getoutput("screen -S _dev -X quit")
-#	time.sleep(0.2)
-#	#exit(0)
-##############################################
 cou = 0
 st_mtime_new = ""
 st_mtime_old = ""
@@ -201,7 +180,7 @@ while 1:
 				screen_PORT   = str(Data[5].strip())
 				
 				screen_NAME = screen_DEVICE+"__"+screen_DESCRI
-				
+				screen_ARGS = screen_ID+" "+screen_DESCRI+" "+screen_IP+" "+screen_PORT
 				
 				#print "screen_DEVICE : "+screen_DEVICE
 				#print "screen_NAME   : "+screen_NAME
@@ -223,20 +202,20 @@ while 1:
 						(_Dev_Type,_Dev_Path) = Finde_Dev(screen_DEVICE)
 						if(len(_Dev_Path)>0):
 							if(_Dev_Type=="p"):#Python
-								print "START : "+screen_NAME+" "+screen_ID
-								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && python RUN.py "+screen_ID+"'"
+								print "START : "+screen_NAME+" "+screen_ARGS
+								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && python RUN.py "+screen_ARGS+"'"
 								#print comm
 								commands.getoutput(comm)
 								time.sleep(1)
 							if(_Dev_Type=="c"):#C
 								print "START : "+screen_NAME+" "+screen_ID
-								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && ./RUN "+screen_ID+"'"
+								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && ./RUN "+screen_ARGS+"'"
 								#print comm
 								commands.getoutput(comm)
 								time.sleep(1)
 							if(_Dev_Type=="b"):#BASH
 								print "START : "+screen_NAME+" "+screen_ID
-								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && ./RUN.sh "+screen_ID+"'"
+								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && ./RUN.sh "+screen_ARGS+"'"
 								#print comm
 								commands.getoutput(comm)
 								time.sleep(1)
