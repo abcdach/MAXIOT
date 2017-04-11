@@ -1,13 +1,10 @@
 import MEDIATOR
 import time
 #############################################
-import _8229BSF
+from pyA20 import i2c
+from ctypes import c_short
 #############################################
 
-from pyA20 import i2c
-import time
-from ctypes import c_short
- 
 DEVICE = 0x77 # Default device I2C address
 
 i2c.init("/dev/i2c-0")
@@ -68,10 +65,10 @@ def readBmp180(addr=DEVICE):
 
 	# Read temperature
 	i2c.open(addr)
-	i2c.write([REG_CALIB,CRV_TEMP])
+	i2c.write([REG_MEAS,CRV_TEMP])
 	i2c.close()
 	
-	time.sleep(0.005)
+	time.sleep(0.015)
 	i2c.open(addr)
 	i2c.write([REG_MSB])
 	(msb, lsb) = i2c.read(2)
@@ -128,7 +125,7 @@ def xxx():
 	(temperature,pressure)=readBmp180()
 	temperature_c  = (temperature - 32) * 5/9
 	_temperature_c = ("%.2f" % temperature_c) 
-	print("Temperature : {0} C".format(_temperature_c))
+	print("Temperature : {0} C".format(temperature))
 	print("Pressure    : {0} mbar".format(pressure))
     
 
@@ -146,11 +143,9 @@ def RUN_DATA_PROCESSING(DATA):
 #############################################
 def RUN_LOOP():
 	(temperature,pressure)=readBmp180()
-	temperature_c  = (temperature - 32) * 5/9
-	_temperature_c = ("%.2f" % temperature_c) 
-	#print("Temperature : {0} C".format(_temperature_c))
+	#print("Temperature : {0} C".format(temperature))
 	#print("Pressure    : {0} mbar".format(pressure))
-	MEDIATOR.TX(0,str(_temperature_c))
+	MEDIATOR.TX(0,str(temperature))
 	time.sleep(0.5)
 	MEDIATOR.TX(1,str(pressure))
 	time.sleep(0.5)

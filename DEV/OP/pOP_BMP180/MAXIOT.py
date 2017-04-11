@@ -11,7 +11,7 @@ import commands
 ##############################################
 import MEDIATOR
 ##############################################
-MAX_dbg = 1
+MAX_dbg = 0
 ##############################################
 reconnect		   =  1
 #Server_IP          =  commands.getoutput("hostname -I")
