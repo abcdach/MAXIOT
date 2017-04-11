@@ -113,18 +113,18 @@ def Finde_Dev(dev):
 DevList = [""]*256
 Data    = [""]*2
 ##############################################
-DevList[0]="1,MAXIOT,"
-DevList[1]="0,bRP_WebGUI,"
-DevList[2]="0,pOP_ILI9341,"
-DevList[3]="0,pOP_8229BSF,"
-DevList[4]="1,pOP_BMP180,"
-DevList[5]="0,pRP_MFRC522_S0,"
-DevList[6]="0,pRP_MFRC522_S1,"
-DevList[7]="0,pRP_RELAY,"
-DevList[8]="0,pUN_Host_IP,"
-DevList[9]="0,pUN_MIZ_1,"
+#DevList[0]="1,MAXIOT,"
+#DevList[1]="0,bRP_WebGUI,"
+#DevList[2]="0,pOP_ILI9341,"
+#DevList[3]="0,pOP_8229BSF,"
+#DevList[4]="1,pOP_BMP180,"
+#DevList[5]="0,pRP_MFRC522_S0,"
+#DevList[6]="0,pRP_MFRC522_S1,"
+#DevList[7]="0,pRP_RELAY,"
+#DevList[8]="0,pUN_Host_IP,"
+#DevList[9]="0,pUN_MIZ_1,"
 ##############################################
-Path = os.path.dirname(os.path.realpath(__file__))
+#Path = os.path.dirname(os.path.realpath(__file__))
 #print Path
 ##############################################
 #for i in xrange(MAX_DevNum):
@@ -186,7 +186,7 @@ while 1:
 							if(_Dev_Type=="p"):#Python
 								print "START : "+screen_name+" "+screen_argu
 								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && python RUN.py "+screen_argu+"'"
-								#print comm
+								print comm
 								commands.getoutput(comm)
 								time.sleep(1)
 							if(_Dev_Type=="c"):#C
