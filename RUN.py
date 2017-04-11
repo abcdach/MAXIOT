@@ -29,13 +29,13 @@ if not os.path.exists(MAX_SYS_CONFIG_PATH):
 	MAX_SYS_CONFIG_NEW = 1
 	print "MAX_SYS_CONFIG : WAS CREATED !!!"
 ##############################################
-#commands.getoutput("rm -rf "+MAX_DIV_CONFIG_FILE_PATH)
+commands.getoutput("rm -rf "+MAX_DIV_CONFIG_FILE_PATH)
 ##############################################
-MAX_DIV_CONFIG_FILE_NEW = 0
-if not os.path.exists(MAX_DIV_CONFIG_FILE_PATH):
-	file(MAX_DIV_CONFIG_FILE_PATH, 'w').close()
-	MAX_DIV_CONFIG_FILE_NEW = 1
-	print "DIV_CONFIG_FILE : WAS CREATED !!!"
+#MAX_DIV_CONFIG_FILE_NEW = 0
+#if not os.path.exists(MAX_DIV_CONFIG_FILE_PATH):
+#	file(MAX_DIV_CONFIG_FILE_PATH, 'w').close()
+#	MAX_DIV_CONFIG_FILE_NEW = 1
+#	print "DIV_CONFIG_FILE : WAS CREATED !!!"
 ##############################################
 import glob
 import ntpath
@@ -61,17 +61,43 @@ for Dev_Path in glob.glob(MAX_SYS_PATH+"/DEV/UN/*"):
 print
 for i in xrange(MAX_DevNum):
 	print MAX_DevList[i]
-##############################################		
+##############################################
+MAX_DIV_CONFIG_FILE_NEW = 0
+if not os.path.exists(MAX_DIV_CONFIG_FILE_PATH):
+	file(MAX_DIV_CONFIG_FILE_PATH, 'w').close()
+	MAX_DIV_CONFIG_FILE_NEW = 1
+	print "DIV_CONFIG_FILE : WAS CREATED !!!"		
 print		
 if(MAX_DIV_CONFIG_FILE_NEW==1):
 	print "CREATING : DEV_CONFIG FILE !!!"
 	print "------------------------------"
 	f = open(MAX_DIV_CONFIG_FILE_PATH,"a")
-	f.write("1,MAXIOT,\n")
+	f.write("1,MAXIOT,A,A,A,A,A,A,A,A,\n")
+	ii = 9000
 	for i in xrange(MAX_DevNum):	
-		data = "0,"+MAX_DevList[i][1]+","
+		data = "0,"+MAX_DevList[i][1]
+		xLen = len(MAX_DevList[i][1])
+		if(xLen<20):
+			xLen = 16 - xLen
+			for iii in xrange(xLen):
+				data = data + " "		
+		data = data + "," + str(ii)
+		######################################
+		Def_DESCRIPTION_FILE = MAX_DevList[i][2]+"Def_DESCRIPTION"
+		if not os.path.exists(Def_DESCRIPTION_FILE):
+			Dev_DESCRIPTION = MAX_DevList[i][1]
+		else:
+			Dev_DESCRIPTION = MAX_DevList[i][1]
+			with open(Def_DESCRIPTION_FILE) as ff:
+				content = ff.readlines()
+				if(len(content)!=0):
+					Dev_DESCRIPTION = content[0].strip()		
+		data = data + "," + Dev_DESCRIPTION
+		data = data + ",127.0.0.1,3004,"
+		######################################
 		print data		
 		f.write(data+"\n")
+		ii = ii + 10
 	f.close()
 	print "------------------------------"		
 ##############################################	
@@ -113,7 +139,7 @@ def Finde_Dev(dev):
 DevList = [""]*256
 Data    = [""]*2
 ##############################################
-#DevList[0]="1,MAXIOT,"
+#DevList[0]="1,MAXIOT,,,,,,,,,,"
 #DevList[1]="0,bRP_WebGUI,"
 #DevList[2]="0,pOP_ILI9341,"
 #DevList[3]="0,pOP_8229BSF,"
@@ -167,53 +193,66 @@ while 1:
 			Data = re.split(',+',DevList[i])
 			if(len(Data)>2):
 				#print Data
-				screen_comm = str(Data[0])
-				screen_name = str(Data[1])
-				screen_argu = str(Data[2])
-				vel = screen.find(screen_name)
+				screen_ENABLE = str(Data[0].strip())
+				screen_DEVICE = str(Data[1].strip())
+				screen_ID     = str(Data[2].strip())
+				screen_DESCRI = str(Data[3].strip())
+				screen_IP     = str(Data[4].strip())
+				screen_PORT   = str(Data[5].strip())
+				
+				screen_NAME = screen_DEVICE+"__"+screen_DESCRI
+				
+				
+				#print "screen_DEVICE : "+screen_DEVICE
+				#print "screen_NAME   : "+screen_NAME
+				
+				vel = screen.find(screen_NAME)
 				if(vel > 0):
-					screen_stat = "1"
+					screen_STATUS = "1"
 				else:
-					screen_stat = "0"
-				#print "screen_comm:"+screen_comm
-				#print "screen_name:"+screen_name	
-				#print "screen_stat:"+screen_stat
-				if(screen_comm!=screen_stat):
-					if(screen_comm=="1"):
+					screen_STATUS = "0"
 					
-						(_Dev_Type,_Dev_Path) = Finde_Dev(screen_name)
+				#print "screen_ENABLE:"+screen_ENABLE
+				#print "screen_DEVICE:"+screen_DEVICE	
+				#print "screen_STATUS:"+screen_STATUS
+				
+				
+				if(screen_ENABLE!=screen_STATUS):
+					if(screen_ENABLE=="1"):
+					
+						(_Dev_Type,_Dev_Path) = Finde_Dev(screen_DEVICE)
 						if(len(_Dev_Path)>0):
 							if(_Dev_Type=="p"):#Python
-								print "START : "+screen_name+" "+screen_argu
-								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && python RUN.py "+screen_argu+"'"
+								print "START : "+screen_NAME+" "+screen_ID
+								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && python RUN.py "+screen_ID+"'"
 								#print comm
 								commands.getoutput(comm)
 								time.sleep(1)
 							if(_Dev_Type=="c"):#C
-								print "START : "+screen_name+" "+screen_argu
-								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && ./RUN "+screen_argu+"'"
+								print "START : "+screen_NAME+" "+screen_ID
+								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && ./RUN "+screen_ID+"'"
 								#print comm
 								commands.getoutput(comm)
 								time.sleep(1)
 							if(_Dev_Type=="b"):#BASH
-								print "START : "+screen_name+" "+screen_argu
-								comm = "screen -dmS "+screen_name+" bash -c 'cd "+_Dev_Path+" && ./RUN.sh "+screen_argu+"'"
+								print "START : "+screen_NAME+" "+screen_ID
+								comm = "screen -dmS "+screen_NAME+" bash -c 'cd "+_Dev_Path+" && ./RUN.sh "+screen_ID+"'"
 								#print comm
 								commands.getoutput(comm)
 								time.sleep(1)
 							
 							
 							
-						if(screen_name=="MAXIOT"):
-							print "START : "+screen_name+" "+screen_argu
-							comm = "screen -dmS "+screen_name+" bash -c '/etc/MAXIOT/MAXIOT_SERVER "+screen_argu+"'"
+						if(screen_DEVICE=="MAXIOT"):
+							print "START : "+screen_NAME
+							comm = "screen -dmS "+screen_NAME+" bash -c '/etc/MAXIOT/MAXIOT_SERVER'"
 							print comm
 							commands.getoutput(comm)
 							time.sleep(7)							
 
-					if(screen_comm=="0"):
-						print "STOP  : "+screen_name				
-						commands.getoutput("screen -S "+screen_name+" -X quit")
+					if(screen_ENABLE=="0"):
+						print "STOP  : "+screen_NAME				
+						commands.getoutput("screen -S "+screen_DEVICE+" -X quit")
 
 
 

@@ -34,7 +34,7 @@ try:
 	MAXIOT.START()
 	########################
 	while 1:
-		time.sleep(0.001)
+		time.sleep(0.1)
 		####################################################	
 		if(MAXIOT.reconnect==1):
 			if(MAXIOT.CLIENT_STATUS==0):
