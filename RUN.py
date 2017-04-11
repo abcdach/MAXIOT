@@ -181,6 +181,12 @@ while 1:
 				
 				screen_NAME = "MAX_"+screen_ID
 				screen_ARGS = screen_ID+" "+screen_DESCRI+" "+screen_IP+" "+screen_PORT
+				if(screen_DEVICE=="MAXIOT"):
+					screen_NAME = "MAXIOT"
+				
+				
+				
+				
 				
 				#print "screen_DEVICE : "+screen_DEVICE
 				#print "screen_NAME   : "+screen_NAME
