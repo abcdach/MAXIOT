@@ -60,7 +60,7 @@ whiptail --title "MAXIOT installer" --checklist  --separate-output "Press SPACE 
 "6"  "Install MAXIOT STUDIO " off \
 "7"  "Install MAXIOT SERVER" off \
 "8"  "Install Psutil" off \
-"9"  "Install midori matchbox unclutter" off \
+"9"  "Install Midori Matchbox Unclutter" off \
 "_" "" off 2>results
 clear
 #####################################
@@ -324,6 +324,18 @@ do
 			python get-pip.py
 			pip install psutil
 			rm -rf get-pip.py
+			#################################################
+
+
+			echo "$(tput setaf 2)";echo $'\n*** install gcc ***\n'; echo "$(tput sgr 0)";sleep 0.5
+                        apt-get --yes --force-yes install gcc
+
+
+			echo "$(tput setaf 2)";echo $'\n*** install MySQL-python ***\n'; echo "$(tput sgr 0)"; sleep 0.5
+			sudo pip install MySQL-python
+
+
+
 		;;
 		9)
 

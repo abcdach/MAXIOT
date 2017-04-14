@@ -8,8 +8,11 @@ if [ $(id -u) != "0" ]; then
 fi
 ############################################################
 choice=$(whiptail --title "MAXIOT TOOLS" --menu "     " 14 48 3 \
-        "1" "MAXIOT TOOLS " \
-        "2" "Self update ..." 3>&2 2>&1 1>&3) 
+        "1" "MAXIOT SYSTEM " 3>&2 2>&1 1>&3) 
+
+#choice=$(whiptail --title "MAXIOT TOOLS" --menu "     " 14 48 3 \
+#        "1" "MAXIOT SYSTEM " \
+#        "2" "Self update ..." 3>&2 2>&1 1>&3) 
 
 option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
 case "${option}" in
@@ -18,18 +21,18 @@ case "${option}" in
         ./main.sh
     ;;
     2)
-    	echo "$(tput setaf 2)";
-		echo $'*** Self update ... ***';
-		echo "$(tput sgr 0)";
-    	rm -rf MAXIOT_MANAGER
-    	git clone https://github.com/abcdach/MAXIOT_MANAGER
-    	rm -rf Scripts tools.sh
-    	cp -rf MAXIOT_MANAGER/Scripts  .
-    	chmod +x Scripts/main.sh
-    	rm -rf MAXIOT_MANAGER
-    	echo "$(tput setaf 2)";
-		echo $'\nOK';
-		echo "$(tput sgr 0)";
+    	#echo "$(tput setaf 2)";
+		#echo $'*** Self update ... ***';
+		#echo "$(tput sgr 0)";
+    	#rm -rf MAXIOT_MANAGER
+    	#git clone https://github.com/abcdach/MAXIOT_MANAGER
+    	#rm -rf Scripts tools.sh
+    	#cp -rf MAXIOT_MANAGER/Scripts  .
+    	#chmod +x Scripts/main.sh
+    	#rm -rf MAXIOT_MANAGER
+    	#echo "$(tput setaf 2)";
+		#echo $'\nOK';
+		#echo "$(tput sgr 0)";
     ;;
     *)
         exit
