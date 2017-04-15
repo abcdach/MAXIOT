@@ -17,7 +17,6 @@ gpio.init()
 gpio.setcfg(pin_LED, gpio.OUTPUT)
 gpio.setcfg(pin_RST, gpio.OUTPUT)
 gpio.setcfg(pin_DC,  gpio.OUTPUT)
-gpio.setcfg(pin_CS,  gpio.OUTPUT)
 ##############################################
 RED     = 0xf800
 GREEN   = 0x07e0
@@ -40,13 +39,10 @@ def RST(val):
 	gpio.output(pin_RST, val)
 def DC(val):
 	gpio.output(pin_DC,  val)
-def CS(val):
-	gpio.output(pin_CS,  val)
 	
 	
 def INIT():
-	LED(1)
-	CS(1)	
+	LED(1)	
 	RST(0)
 	RST(1)	
 
@@ -161,18 +157,17 @@ def INIT():
 	
 #####################################	
 def SEND_COMMAND(val):
-	CS(1)
 	DC(0)
-	CS(0)
-	Send_1_Byte(val)		
+	Send_1_Byte(val)
+	DC(1)		
 def SEND_DATA_1_Byte(val):
-	DC(1)
+	#DC(1)
 	Send_1_Byte(val)	
 def SEND_DATA_2_Byte(val_1,val_2):
-	DC(1)
+	#DC(1)
 	Send_2_Byte(val_1,val_2)	
 def SEND_DATA_4_Byte(val_1,val_2,val_3,val_4):
-	DC(1)
+	#DC(1)
 	Send_4_Byte(val_1,val_2,val_3,val_4)	
 #####################################	
 def Send_1_Byte(val):	
@@ -205,15 +200,15 @@ def CLS():
 	SET_COL(0, 239);
 	SET_PAGE(0, 319);
 	SEND_COMMAND(0x2c);                                                                                              
-	DC(1)
-	CS(0)
+	#DC(1)
+	#CS(0)
 	for x in range(38400):
 		Send_4_Byte(0,0,0,0)
 		#Send_1_Byte(0);
 		#Send_1_Byte(0);
 		#Send_1_Byte(0);
 		#Send_1_Byte(0);    
-	CS(1)
+	#CS(1)
 #####################################
 
 #####################################
@@ -232,11 +227,11 @@ def CLS3():
 	SET_COL(0, 319)
 	SET_PAGE(0, 239)
 	SEND_COMMAND(0x2c);                                                                                              
-	DC(1)
-	CS(0)
+	#DC(1)
+	#CS(0)
 	for x in range(38400/4):
 		spi.write([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) 
-	CS(1)
+	#CS(1)
 	
 	
 #####################################
@@ -250,8 +245,8 @@ def GUI_PutChar_ARB(x,y,cc,Color,bkColor):
 	SET_COL(x, x+15)
 	SET_PAGE(y, y+15)
 	SEND_COMMAND(0x2c)                                                                                              
-	DC(1)
-	CS(0)
+	#DC(1)
+	#CS(0)
 
 	color_H   = Color >> 8
 	color_L   = Color & 0x00ff
@@ -296,7 +291,7 @@ def GUI_PutChar_ARB(x,y,cc,Color,bkColor):
 		xp[16],xp[17],xp[18],xp[19],xp[20],xp[21],xp[22],xp[23],
 		xp[24],xp[25],xp[26],xp[27],xp[28],xp[29],xp[30],xp[31]				
 		])				
-	CS(1)	
+	#CS(1)	
 #####################################
 def ARN(x,y,str,Color,bkColor):
 	for j in range(len(str)):
@@ -306,8 +301,8 @@ def GUI_PutChar_ARN(x,y,cc,Color,bkColor):
 	SET_COL(x, x+15)
 	SET_PAGE(y, y+15)
 	SEND_COMMAND(0x2c)                                                                                              
-	DC(1)
-	CS(0)
+	#DC(1)
+	#CS(0)
 
 	color_H   = Color >> 8
 	color_L   = Color & 0x00ff
@@ -350,7 +345,7 @@ def GUI_PutChar_ARN(x,y,cc,Color,bkColor):
 		xp[16],xp[17],xp[18],xp[19],xp[20],xp[21],xp[22],xp[23],
 		xp[24],xp[25],xp[26],xp[27],xp[28],xp[29],xp[30],xp[31]				
 		])				
-	CS(1)	
+	#CS(1)	
 #####################################
 def Text_24B(x,y,str,Color,bkColor):
 	for j in range(len(str)):
@@ -360,8 +355,8 @@ def GUI_PutChar_GroteskBold24x48(x,y,cc,Color,bkColor):
 	SET_COL(x, x+23)
 	SET_PAGE(y, y+48)
 	SEND_COMMAND(0x2c);                                                                                              
-	DC(1)
-	CS(0)
+	#DC(1)
+	#CS(0)
 
 	color_H   = Color >> 8
 	color_L   = Color & 0x00ff
@@ -409,7 +404,7 @@ def GUI_PutChar_GroteskBold24x48(x,y,cc,Color,bkColor):
 		xp[32],xp[33],xp[34],xp[35],xp[36],xp[37],xp[38],xp[39],
 		xp[40],xp[41],xp[42],xp[43],xp[44],xp[45],xp[46],xp[47]		
 		])				
-	CS(1)	
+	#CS(1)	
 	
 #####################################	
 def Text_32B(x,y,str,Color,bkColor):
@@ -420,8 +415,8 @@ def GUI_PutChar_GroteskBold32x64(x,y,cc,Color,bkColor):
 	SET_COL(x, x+31)
 	SET_PAGE(y, y+63)
 	SEND_COMMAND(0x2c);                                                                                              
-	DC(1)
-	CS(0)
+	#DC(1)
+	##CS(0)
 
 	color_H   = Color >> 8
 	color_L   = Color & 0x00ff
@@ -461,7 +456,7 @@ def GUI_PutChar_GroteskBold32x64(x,y,cc,Color,bkColor):
 			else:
 				xp[j*2+0] = bkcolor_H
 				xp[j*2+1] = bkcolor_L		
-
+		#CS(0)
 		spi.write([
 		xp[0],xp[1],xp[2],xp[3],xp[4],xp[5],xp[6],xp[7],
 		xp[8],xp[9],xp[10],xp[11],xp[12],xp[13],xp[14],xp[15],
@@ -471,8 +466,9 @@ def GUI_PutChar_GroteskBold32x64(x,y,cc,Color,bkColor):
 		xp[40],xp[41],xp[42],xp[43],xp[44],xp[45],xp[46],xp[47],
 		xp[48],xp[49],xp[50],xp[51],xp[52],xp[53],xp[54],xp[55],
 		xp[56],xp[57],xp[58],xp[59],xp[60],xp[61],xp[62],xp[63]		
-		])				
-	CS(1)
+		])
+		#CS(1)				
+	#CS(1)
 
 
 
@@ -486,8 +482,8 @@ def GUI_PutChar_SevenSegmentFull(x,y,cc,Color,bkColor):
 	SET_COL(x, x+31)
 	SET_PAGE(y, y+49)
 	SEND_COMMAND(0x2c);                                                                                              
-	DC(1)
-	CS(0)
+	#DC(1)
+	#CS(0)
 
 	color_H   = Color >> 8
 	color_L   = Color & 0x00ff
@@ -538,7 +534,7 @@ def GUI_PutChar_SevenSegmentFull(x,y,cc,Color,bkColor):
 		xp[48],xp[49],xp[50],xp[51],xp[52],xp[53],xp[54],xp[55],
 		xp[56],xp[57],xp[58],xp[59],xp[60],xp[61],xp[62],xp[63]		
 		])				
-	CS(1)
+	#CS(1)
 
 
 #####################################	
@@ -550,8 +546,8 @@ def GUI_PutChar_GroteskBold16x32(x,y,cc,Color,bkColor):
 	SET_COL(x, x+15)
 	SET_PAGE(y, y+31)
 	SEND_COMMAND(0x2c);                                                                                              
-	DC(1)
-	CS(0)
+	#DC(1)
+	#CS(0)
 
 	color_H   = Color >> 8
 	color_L   = Color & 0x00ff
@@ -596,7 +592,7 @@ def GUI_PutChar_GroteskBold16x32(x,y,cc,Color,bkColor):
 		xp[16],xp[17],xp[18],xp[19],xp[20],xp[21],xp[22],xp[23],
 		xp[24],xp[25],xp[26],xp[27],xp[28],xp[29],xp[30],xp[31]	
 		])				
-	CS(1)
+	#CS(1)
 
 
 def TEST():
