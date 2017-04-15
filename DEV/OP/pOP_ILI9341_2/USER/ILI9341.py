@@ -117,17 +117,15 @@ def INIT():
 #####################################	
 def SEND_COMMAND(val):
 	DC(0)
-	Send_1_Byte(val)
+	spi.write([val])
 	DC(1)		
-def SEND_DATA_1_Byte(val):
-	Send_1_Byte(val)	
+	
 def SEND_DATA_2_Byte(val_1,val_2):
 	Send_2_Byte(val_1,val_2)	
 def SEND_DATA_4_Byte(val_1,val_2,val_3,val_4):
 	Send_4_Byte(val_1,val_2,val_3,val_4)	
 #####################################	
-def Send_1_Byte(val):	
-	spi.write([val])
+
 def Send_2_Byte(val_1,val_2):	
 	spi.write([val_1,val_2])	
 def Send_4_Byte(val_1,val_2,val_3,val_4):	
