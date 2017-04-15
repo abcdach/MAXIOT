@@ -1,5 +1,5 @@
 ##############################################
-# v0.02			export PS1='> '
+# v0.03			export PS1='> '
 ##############################################
 import threading
 import socket
@@ -14,10 +14,9 @@ import MEDIATOR
 MAX_dbg = 0
 ##############################################
 reconnect		   =  1
-#Server_IP          =  commands.getoutput("hostname -I")
-Server_IP          = "10.0.0.20"
+Server_IP          = "127.0.0.1"
 Server_PORT        =  3004
-DEVICE_NAME        = "9999"
+DEVICE_ID          = "9999"
 DEVICE_DESCRIPTION = "Device"
 ##############################################
 data = ""
@@ -64,7 +63,7 @@ class clientThread (threading.Thread):
 		if(MAX_dbg==1):print "###################################"
 		if(MAX_dbg==1):print "... MAX : Server_IP   : "+str(Server_IP)
 		if(MAX_dbg==1):print "... MAX : Server_PORT : "+str(Server_PORT)
-		if(MAX_dbg==1):print "... MAX : DEVICE_NAME : "+str(DEVICE_NAME)
+		if(MAX_dbg==1):print "... MAX : DEVICE_ID   : "+str(DEVICE_ID)
 		if(MAX_dbg==1):print "... MAX : DEVICE_DESC : "+str(DEVICE_DESCRIPTION)
 		if(MAX_dbg==1):print "###################################"
 		if(MAX_dbg==1):print "... MAX : CLIENT START !!!"
@@ -116,7 +115,7 @@ class clientThread (threading.Thread):
 							N_VEL = int(json_data["N"])
 							#-------------------------------
 							if(N_VEL==1):# mowyobiobis parametrebis gadacema
-								data = "{\"N\":\"1\",\"D\":\""+DEVICE_NAME+"\",\"V\":\""+DEVICE_DESCRIPTION+"\"}"
+								data = "{\"N\":\"1\",\"D\":\""+DEVICE_ID+"\",\"V\":\""+DEVICE_DESCRIPTION+"\"}"
 								sock.sendall(data)
 								if(MAX_dbg==1):print("<-- MAX : "+data)
 							#-------------------------------			

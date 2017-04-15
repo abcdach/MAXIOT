@@ -1,16 +1,14 @@
 ##############################################
 # v0.03			export PS1='> '
 ##############################################
-#data1 = str(sys.argv[1])
-#data2 = str(sys.argv[2])
-#data3 = str(sys.argv[3])
-#data4 = str(sys.argv[4])
-#if(MAX_dbg==1):print ( data1 )
-#if(MAX_dbg==1):print ( data2 )
-#if(MAX_dbg==1):print ( data3 )
-#if(MAX_dbg==1):print ( data4 )
+import sys
+
+ARG_ID   = str(sys.argv[1])
+ARG_DESC = str(sys.argv[2])
+ARG_IP   = str(sys.argv[3])
+ARG_PORT = str(sys.argv[4])
+
 ##############################################
-import MAXIOT_CONFIG
 import time
 import MAXIOT
 import MEDIATOR
@@ -25,16 +23,17 @@ try:
 	########################
 	MEDIATOR.START()
 	time.sleep(0.2)
-	########################
-	MAXIOT.reconnect		  = MAXIOT_CONFIG.reconnect
-	MAXIOT.Server_IP          = MAXIOT_CONFIG.Server_IP
-	MAXIOT.Server_PORT        = MAXIOT_CONFIG.Server_PORT
-	MAXIOT.DEVICE_NAME        = MAXIOT_CONFIG.DEVICE_NAME
-	MAXIOT.DEVICE_DESCRIPTION = MAXIOT_CONFIG.DEVICE_DESCRIPTION
-	MAXIOT.START()
+	########################	
+	MAXIOT.reconnect		  = 1
+	MAXIOT.Server_IP          = str(ARG_IP)
+	MAXIOT.Server_PORT        = int(ARG_PORT)
+	MAXIOT.DEVICE_ID          = str(ARG_ID)
+	MAXIOT.DEVICE_DESCRIPTION = str(ARG_DESC)
+	MAXIOT.START()	
+	
 	########################
 	while 1:
-		time.sleep(0.001)
+		time.sleep(0.1)
 		####################################################	
 		if(MAXIOT.reconnect==1):
 			if(MAXIOT.CLIENT_STATUS==0):
