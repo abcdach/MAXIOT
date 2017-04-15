@@ -84,56 +84,31 @@ def INIT():
  
 	time.sleep(IME)
 	SEND_COMMAND(0x3A) #Pixel Format Set 
-	SEND_DATA_1_Byte(0x55) 
+	spi.write([0x55,]) 
 
 	SEND_COMMAND(0xB1) #Frame Rate Control (In Normal Mode/Full Colors) 
-	SEND_DATA_1_Byte(0x00) 
-	SEND_DATA_1_Byte(0x18) 
+	spi.write([0x00,0x18]) 
 
 	SEND_COMMAND(0xB6) #Display Function Control
-	SEND_DATA_1_Byte(0x08) 
-	SEND_DATA_1_Byte(0x82) 
-	SEND_DATA_1_Byte(0x27) 
+	spi.write([0x08,0x82,0x27]) 
 
 	SEND_COMMAND(0xF2) #3Gamma Function Disable
-	SEND_DATA_1_Byte(0x00) 
+	spi.write([0x00,]) 
 
 	SEND_COMMAND(0x26) #Gamma curve selected
-	SEND_DATA_1_Byte(0x01)  
+	spi.write([0x01,])  
 
 	SEND_COMMAND(0xE0) #Set Gamma
-	SEND_DATA_1_Byte(0x0F) 
-	SEND_DATA_1_Byte(0x31) 
-	SEND_DATA_1_Byte(0x2B) 
-	SEND_DATA_1_Byte(0x0C) 
-	SEND_DATA_1_Byte(0x0E) 
-	SEND_DATA_1_Byte(0x08) 
-	SEND_DATA_1_Byte(0x4E) 
-	SEND_DATA_1_Byte(0xF1) 
-	SEND_DATA_1_Byte(0x37) 
-	SEND_DATA_1_Byte(0x07) 
-	SEND_DATA_1_Byte(0x10) 
-	SEND_DATA_1_Byte(0x03) 
-	SEND_DATA_1_Byte(0x0E) 
-	SEND_DATA_1_Byte(0x09) 
-	SEND_DATA_1_Byte(0x00) 
+	spi.write([
+	0x0F,0x31,0x2B,0x0C,0x0E,
+	0x08,0x4E,0xF1,0x37,0x07,
+	0x10,0x03,0x0E,0x09,0x00]) 
 
 	SEND_COMMAND(0xE1)      #Set Gamma
-	SEND_DATA_1_Byte(0x00) 
-	SEND_DATA_1_Byte(0x0E) 
-	SEND_DATA_1_Byte(0x14) 
-	SEND_DATA_1_Byte(0x03) 
-	SEND_DATA_1_Byte(0x11) 
-	SEND_DATA_1_Byte(0x07) 
-	SEND_DATA_1_Byte(0x31) 
-	SEND_DATA_1_Byte(0xC1) 
-	SEND_DATA_1_Byte(0x48) 
-	SEND_DATA_1_Byte(0x08) 
-	SEND_DATA_1_Byte(0x0F) 
-	SEND_DATA_1_Byte(0x0C) 
-	SEND_DATA_1_Byte(0x31) 
-	SEND_DATA_1_Byte(0x36) 
-	SEND_DATA_1_Byte(0x0F) 
+	spi.write([
+	0x00,0x0E,0x14,0x03,0x11, 
+	0x07,0x31,0xC1,0x48,0x08, 
+	0x0F,0x0C,0x31,0x36,0x0F]) 
         
 	SEND_COMMAND(0x11)    #Exit Sleep
 	SEND_COMMAND(0x29)    #Display on
