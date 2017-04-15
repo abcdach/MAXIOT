@@ -31,7 +31,7 @@ name="RUN.py"
 # The path of the client executable
 command="/usr/bin/python"
 # Any command line arguments for the client executable
-command_args="/home/dach/MAXIOT/RUN.py"
+command_args="/home/maxiot/MAXIOT/RUN.py"
 # The path of the daemon executable
 daemon="/usr/bin/daemon"
 
