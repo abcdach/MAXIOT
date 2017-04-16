@@ -84,7 +84,6 @@ def ADS1115_INIT():
 def ADS1115_GetVal():
 	i2c.open(ADS1115_ADDRESS)
 	i2c.write([0x00])
-	time.sleep(0.1)
 	(MSB, LSB) = i2c.read(2)
 	i2c.close()
 	Vel = (MSB << 8)+LSB
@@ -97,7 +96,9 @@ ADS1115_INIT()
 while 1:
 	time.sleep(0.1)
 	VEL = ADS1115_GetVal()
-	print str(VEL)
+	VEL = VEL*0.000125
+	X =  '%.4f' % float(VEL)
+	print str(X)
 
 
 
