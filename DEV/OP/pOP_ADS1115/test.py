@@ -77,13 +77,9 @@ MSB_Config = ADS1115_OS | ADS1115_MUX | ADS1115_PGA | ADS1115_MODE
 LSB_Config = ADS1115_DR | ADS1115_COMP_MODE | ADS1115_COMP_POL | ADS1115_COMP_LAT | ADS1115_COMP_QUE
 
 def ADS1115_INIT():
-	print str(MSB_Config)
-	print str(LSB_Config)
-	print str(ADS1115_ADDRESS)
 	i2c.open(ADS1115_ADDRESS)
 	i2c.write([0x01,MSB_Config,LSB_Config])
 	i2c.close()
-
 
 def ADS1115_GetVal():
 	i2c.open(ADS1115_ADDRESS)
@@ -94,27 +90,17 @@ def ADS1115_GetVal():
 	Vel = (MSB << 8)+LSB
 	if(Vel > 32767):
 		Vel = 0
-	print str(Vel)
-
-
-
-
-
-
-
+	return Vel
 
 
 ADS1115_INIT()
 while 1:
 	time.sleep(0.1)
-	ADS1115_GetVal()
+	VEL = ADS1115_GetVal()
+	print str(VEL)
 
 
 
-#addr = 0x48 # Default device I2C address
 
 
-#i2c.open(addr)
-#i2c.write([0x00])
-#(msb, lsb) = i2c.read(2)
-#i2c.close()
+
