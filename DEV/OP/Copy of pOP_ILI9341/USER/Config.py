@@ -7,11 +7,9 @@ spi_dev   = "/dev/spidev0.0"
 spi_speed = 48000000
 #spi_speed = 10000000
 
-
-pin_RST = port.PA1
-pin_DC  = port.PA0
-pin_LED = port.PA3
-
+pin_LED = port.PA20
+pin_RST = port.PA10
+pin_DC  = port.PA9
 pin_CS  = port.PA8
 
 

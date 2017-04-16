@@ -50,13 +50,13 @@ ADS1115_DR = 0 << 5			#000 : 8SPS
 #----------------------------------------------------------------------
 #	Comparator mode
 #----------------------------------------------------------------------
-ADS1115_COMP_MODE = 0 << 4		#Traditional comparator with hysteresis -- default
-#ADS1115_COMP_MODE = 1 << 4		#Window comparator
+#ADS1115_COMP_MODE = 0 << 4		#Traditional comparator with hysteresis -- default
+ADS1115_COMP_MODE = 1 << 4		#Window comparator
 #----------------------------------------------------------------------
 #	Comparator polarity
 #----------------------------------------------------------------------
-ADS1115_COMP_POL = 0 << 3		#Active low -- default
-#ADS1115_COMP_POL = 1 << 3		#Active high
+#ADS1115_COMP_POL = 0 << 3		#Active low -- default
+ADS1115_COMP_POL = 1 << 3		#Active high
 #----------------------------------------------------------------------
 #	Latching comparator
 #----------------------------------------------------------------------
