@@ -15,11 +15,11 @@ def RUN_INIT():
 	GUI.init()
 #############################################	
 def RUN_MEM_DATA_PROCESSING(SLOT,DATA):
-	print "--> LCD :"+str(SLOT)+": " + str(DATA)
+	#print "--> LCD :"+str(SLOT)+": " + str(DATA)
 	GUI.Text(DATA)
 #############################################
 def RUN_DATA_PROCESSING(SLOT,DATA):
-	print "--> LCD :"+str(SLOT)+": " + str(DATA)
+	#print "--> LCD :"+str(SLOT)+": " + str(DATA)
 	GUI.Text(DATA)
 #############################################
 xCOU = 0;

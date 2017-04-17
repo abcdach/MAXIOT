@@ -98,9 +98,9 @@ class TXD_Thread(threading.Thread):
 		self.threadID = threadID
 		self.name = name
 	def run(self):
-		if(MED_dbg==0):print "###################################"
-		if(MED_dbg==0):print "... TXD : ... : START !!!"
-		if(MED_dbg==0):print "###################################"
+		if(MED_dbg==1):print "###################################"
+		if(MED_dbg==1):print "... TXD : ... : START !!!"
+		if(MED_dbg==1):print "###################################"
 		global TXD_STATUS
 		while 1:
 			global txd_event_is_set
@@ -108,20 +108,23 @@ class TXD_Thread(threading.Thread):
 			txd_event_is_set = txdEvent.wait(3)			
 			if(TXD_STATUS==0):break
 			if txd_event_is_set:
-				if(MED_dbg==1):print "... TXD : ... : EVENT : detected !!!"
+				if(MED_dbg==0):print "... TXD : ... : EVENT : detected !!!"
 				txdEvent.clear()
-				while(RX_FIFO_Len()):
-					(s,d) = RX_FIFO_Get()
-					#USER_BRIDGE.RUN_DATA_PROCESSING(s,d)
+				print "TX_FIFO_Len = "+str(TX_FIFO_Len())
+				while(TX_FIFO_Len()):
+					(s,d) = TX_FIFO_Get()
+					#print " fffff " + str(s) + "   " + d
+					MAXIOT.SEND(s,d)
 			else:
 				if(TXD_STATUS==0):break
-		if(MED_dbg==0):print "###################################"
-		if(MED_dbg==0):print "... TXD : ... : STOP !!!"
-		if(MED_dbg==0):print "###################################"
+		if(MED_dbg==1):print "###################################"
+		if(MED_dbg==1):print "... TXD : ... : STOP !!!"
+		if(MED_dbg==1):print "###################################"
 		TXD_STATUS = 0				
 #########################################################
 def START():
 	RX_FIFO_init()
+	TX_FIFO_init()
 	USER_BRIDGE.RUN_INIT()
 	global USER_STATUS
 	global TXD_STATUS
@@ -159,7 +162,7 @@ def MEM_RX(_SLOT,_DATA):#damaxsovrebuli monacemebis migeba
 	DATA = str(_DATA)
 	if(MED_dbg==1):print "... MED : MEM_RX("+SLOT+") "+DATA
 	RX_FIFO_Put(SLOT,DATA)
-	if(MED_dbg==1):print "... MED : MEM : Event --> "
+	if(MED_dbg==1):print "... MED : MEM : Event RX--> "
 	mem_userEvent.set()
 #########################################################
 def RX(_SLOT,_DATA):#pirdapiri monacemebis migeba
@@ -167,19 +170,16 @@ def RX(_SLOT,_DATA):#pirdapiri monacemebis migeba
 	DATA = str(_DATA)
 	if(MED_dbg==1):print "... MED : RX("+SLOT+") "+DATA
 	RX_FIFO_Put(SLOT,DATA)
-	if(MED_dbg==1):print "... MED : Event --> "
+	if(MED_dbg==1):print "... MED : Event RX--> "
 	userEvent.set()
 #########################################################
 def TX(_SLOT,_DATA):#gadasacemi monacemebis porti
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
-	print "<-- S("+SLOT+") "+DATA
-	MAXIOT.SEND(SLOT,DATA)
-	
-	
-	
-	
-	
+	if(MED_dbg==0):print "... MED : TX("+SLOT+") "+DATA
+	TX_FIFO_Put(SLOT,DATA)
+	if(MED_dbg==0):print "... MED : Event TX--> "
+	txdEvent.set()
 	
 #########################################################
 # RX_FIFO
@@ -230,7 +230,58 @@ def RX_FIFO_Len():
 	return RX_FIFO_LEN
 #########################################################
 
-
+#########################################################
+# TX_FIFO
+#########################################################
+TX_FIFO_MaxLen = 64
+#TX_FIFO = [""] * TX_FIFO_MaxLen
+TX_FIFO = ["",""] * TX_FIFO_MaxLen
+TX_FIFO_X = 0
+TX_FIFO_Y = 0
+TX_FIFO_LEN = 0
+#-------------------------------
+def TX_FIFO_init():
+	global TX_FIFO_X
+	TX_FIFO_X = 0
+	TX_FIFO_Y = 0
+	TX_FIFO_LEN = 0
+#-------------------------------
+def TX_FIFO_Put(SLOT,DATA):
+	global TX_FIFO_X	
+	global TX_FIFO_LEN
+	if(TX_FIFO_LEN < TX_FIFO_MaxLen):
+		if(TX_FIFO_X == TX_FIFO_MaxLen):
+			TX_FIFO_X = 0
+		TX_FIFO[TX_FIFO_X]=(SLOT,DATA)
+		#print str(TX_FIFO[TX_FIFO_X])
+		TX_FIFO_X = TX_FIFO_X + 1
+		TX_FIFO_LEN = TX_FIFO_LEN + 1
+		print str(TX_FIFO_LEN)
+#-------------------------------	
+def TX_FIFO_Satus():
+	if(TX_FIFO_LEN == TX_FIFO_MaxLen):
+		return 1
+	else:
+		return 0
+#-------------------------------	
+def TX_FIFO_Get():
+	global TX_FIFO_Y	
+	global TX_FIFO_LEN
+	#vel = ""	
+	if(TX_FIFO_LEN != 0):
+		if(TX_FIFO_Y == TX_FIFO_MaxLen):
+			TX_FIFO_Y = 0		
+		TX_FIFO_LEN = TX_FIFO_LEN - 1
+		#print str(TX_FIFO[TX_FIFO_Y])
+		(VEL_SLOT,VEL_DATA) = TX_FIFO[TX_FIFO_Y]
+		TX_FIFO_Y = TX_FIFO_Y + 1		
+	return (VEL_SLOT,VEL_DATA)
+#-------------------------------
+def TX_FIFO_Len():#!!! amis algoritmi misaxedia rom kopliqtebi ar xdebodes
+	global TX_FIFO_LEN
+	#print "@@@@@@@@@@@@ "+str(TX_FIFO_LEN)
+	return TX_FIFO_LEN
+#########################################################
 
 
 
