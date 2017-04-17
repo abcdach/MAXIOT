@@ -10,6 +10,7 @@ import time
 import USER_BRIDGE
 ##############################################
 USER_STATUS     = 0
+TXD_STATUS       = 0
 MEM_USER_STATUS = 0
 USER_LOOP       = 0
 MED_dbg = 0
@@ -89,16 +90,53 @@ class loop_userThread(threading.Thread):
 		if(MED_dbg==1):print "... MED : ... : USER LOOP !!!"
 		if(MED_dbg==1):print "###################################"
 		USER_LOOP = 0
+		
+#########################################################		
+class TXD_Thread(threading.Thread):
+	def __init__(self, threadID, name):
+		threading.Thread.__init__(self)
+		self.threadID = threadID
+		self.name = name
+	def run(self):
+		if(MED_dbg==0):print "###################################"
+		if(MED_dbg==0):print "... TXD : ... : START !!!"
+		if(MED_dbg==0):print "###################################"
+		global TXD_STATUS
+		while 1:
+			global txd_event_is_set
+			if(MED_dbg==1):print "... TXD : ... : EVENT : wait"
+			txd_event_is_set = txdEvent.wait(3)			
+			if(TXD_STATUS==0):break
+			if txd_event_is_set:
+				if(MED_dbg==1):print "... TXD : ... : EVENT : detected !!!"
+				txdEvent.clear()
+				while(RX_FIFO_Len()):
+					(s,d) = RX_FIFO_Get()
+					#USER_BRIDGE.RUN_DATA_PROCESSING(s,d)
+			else:
+				if(TXD_STATUS==0):break
+		if(MED_dbg==0):print "###################################"
+		if(MED_dbg==0):print "... TXD : ... : STOP !!!"
+		if(MED_dbg==0):print "###################################"
+		TXD_STATUS = 0				
 #########################################################
 def START():
 	RX_FIFO_init()
 	USER_BRIDGE.RUN_INIT()
 	global USER_STATUS
+	global TXD_STATUS
 	global MEM_USER_STATUS
 	global USER_LOOP
 	USER_LOOP       = 1
 	USER_STATUS     = 1
+	TXD_STATUS		= 1
 	MEM_USER_STATUS = 1
+	#-------------------------------
+	time.sleep(0.2)	
+	global txdEvent
+	txdEvent = threading.Event()
+	_TXD_Thread = TXD_Thread(1, "TXD_Thread")
+	_TXD_Thread.start()
 	#-------------------------------
 	time.sleep(0.2)	
 	global userEvent
@@ -114,7 +152,7 @@ def START():
 	#-------------------------------
 	time.sleep(0.2)
 	_loop_userThread = loop_userThread(1, "mem_userThread")
-	_loop_userThread.start()  
+	_loop_userThread.start()
 #########################################################
 def MEM_RX(_SLOT,_DATA):#damaxsovrebuli monacemebis migeba
 	SLOT = str(_SLOT)
@@ -137,11 +175,16 @@ def TX(_SLOT,_DATA):#gadasacemi monacemebis porti
 	DATA = str(_DATA)
 	print "<-- S("+SLOT+") "+DATA
 	MAXIOT.SEND(SLOT,DATA)
+	
+	
+	
+	
+	
+	
 #########################################################
 # RX_FIFO
 #########################################################
 RX_FIFO_MaxLen = 64
-#RX_FIFO = [""] * RX_FIFO_MaxLen
 RX_FIFO = ["",""] * RX_FIFO_MaxLen
 RX_FIFO_X = 0
 RX_FIFO_Y = 0

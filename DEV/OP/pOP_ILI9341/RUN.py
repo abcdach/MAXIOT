@@ -1,5 +1,5 @@
 ##############################################
-# v0.04			export PS1='> '
+# v0.05			export PS1='> '
 ##############################################
 import sys
 
@@ -70,6 +70,7 @@ finally:
 	MAXIOT.CLIENT_STATUS     = 0
 	MAXIOT.PING_STATUS       = 0
 	MEDIATOR.USER_STATUS     = 0
+	MEDIATOR.TXD_STATUS		 = 0 
 	MEDIATOR.MEM_USER_STATUS = 0
 	MEDIATOR.USER_LOOP       = 0 
 

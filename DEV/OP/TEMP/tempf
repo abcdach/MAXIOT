@@ -1,0 +1,49 @@
+#########################################################
+# TX_FIFO
+#########################################################
+TX_FIFO_MaxLen = 64
+#TX_FIFO = [""] * TX_FIFO_MaxLen
+TX_FIFO = ["",""] * TX_FIFO_MaxLen
+TX_FIFO_X = 0
+TX_FIFO_Y = 0
+TX_FIFO_LEN = 0
+#-------------------------------
+def TX_FIFO_init():
+	global TX_FIFO_X
+	TX_FIFO_X = 0
+	TX_FIFO_Y = 0
+	TX_FIFO_LEN = 0
+#-------------------------------
+def TX_FIFO_Put(SLOT,DATA):
+	global TX_FIFO_X	
+	global TX_FIFO_LEN
+	if(TX_FIFO_LEN < TX_FIFO_MaxLen):
+		if(TX_FIFO_X == TX_FIFO_MaxLen):
+			TX_FIFO_X = 0
+		TX_FIFO[TX_FIFO_X]=(SLOT,DATA)
+		TX_FIFO_X = TX_FIFO_X + 1
+		TX_FIFO_LEN = TX_FIFO_LEN + 1
+#-------------------------------	
+def TX_FIFO_Satus():
+	if(TX_FIFO_LEN == TX_FIFO_MaxLen):
+		return 1
+	else:
+		return 0
+#-------------------------------	
+def TX_FIFO_Get():
+	global TX_FIFO_Y	
+	global TX_FIFO_LEN
+	#vel = ""	
+	if(TX_FIFO_LEN != 0):
+		if(TX_FIFO_Y == TX_FIFO_MaxLen):
+			TX_FIFO_Y = 0		
+		TX_FIFO_LEN = TX_FIFO_LEN - 1
+		#print str(TX_FIFO[TX_FIFO_Y])
+		(VEL_SLOT,VEL_DATA) = TX_FIFO[TX_FIFO_Y]
+		TX_FIFO_Y = TX_FIFO_Y + 1		
+	return (VEL_SLOT,VEL_DATA)
+#-------------------------------
+def TX_FIFO_Len():
+	global TX_FIFO_LEN
+	return TX_FIFO_LEN
+#########################################################

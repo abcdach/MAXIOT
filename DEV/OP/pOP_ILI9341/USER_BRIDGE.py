@@ -22,9 +22,13 @@ def RUN_DATA_PROCESSING(SLOT,DATA):
 	print "--> LCD :"+str(SLOT)+": " + str(DATA)
 	GUI.Text(DATA)
 #############################################
+xCOU = 0;
 def RUN_LOOP():
-	time.sleep(1)
+	global xCOU
+	time.sleep(0.3)
 	print "LOOP"
+	MEDIATOR.TX(1,str(xCOU))
+	xCOU=xCOU+1
 
 
 
