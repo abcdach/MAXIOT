@@ -108,13 +108,13 @@ class TXD_Thread(threading.Thread):
 			txd_event_is_set = txdEvent.wait(3)			
 			if(TXD_STATUS==0):break
 			if txd_event_is_set:
-				if(MED_dbg==0):print "... TXD : ... : EVENT : detected !!!"
+				if(MED_dbg==1):print "... TXD : ... : EVENT : detected !!!"
 				txdEvent.clear()
-				print "TX_FIFO_Len = "+str(TX_FIFO_Len())
+				#print "TX_FIFO_Len = "+str(TX_FIFO_Len())
 				while(TX_FIFO_Len()):
 					(s,d) = TX_FIFO_Get()
-					#print " fffff " + str(s) + "   " + d
 					MAXIOT.SEND(s,d)
+					time.sleep(0.05)#gagavnis dacdis dayovneba
 			else:
 				if(TXD_STATUS==0):break
 		if(MED_dbg==1):print "###################################"
@@ -176,9 +176,9 @@ def RX(_SLOT,_DATA):#pirdapiri monacemebis migeba
 def TX(_SLOT,_DATA):#gadasacemi monacemebis porti
 	SLOT = str(_SLOT)
 	DATA = str(_DATA)
-	if(MED_dbg==0):print "... MED : TX("+SLOT+") "+DATA
+	if(MED_dbg==1):print "... MED : TX("+SLOT+") "+DATA
 	TX_FIFO_Put(SLOT,DATA)
-	if(MED_dbg==0):print "... MED : Event TX--> "
+	if(MED_dbg==1):print "... MED : Event TX--> "
 	txdEvent.set()
 	
 #########################################################
@@ -253,10 +253,8 @@ def TX_FIFO_Put(SLOT,DATA):
 		if(TX_FIFO_X == TX_FIFO_MaxLen):
 			TX_FIFO_X = 0
 		TX_FIFO[TX_FIFO_X]=(SLOT,DATA)
-		#print str(TX_FIFO[TX_FIFO_X])
 		TX_FIFO_X = TX_FIFO_X + 1
 		TX_FIFO_LEN = TX_FIFO_LEN + 1
-		print str(TX_FIFO_LEN)
 #-------------------------------	
 def TX_FIFO_Satus():
 	if(TX_FIFO_LEN == TX_FIFO_MaxLen):
