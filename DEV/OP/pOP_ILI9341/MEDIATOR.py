@@ -1,5 +1,5 @@
 ##############################################
-# v0.03	test !!!		export PS1='> '
+# v0.04	test !!!		export PS1='> '
 ##############################################
 import sys
 sys.path.append('USER')
@@ -62,6 +62,8 @@ class userThread(threading.Thread):
 			if user_event_is_set:
 				if(MED_dbg==1):print "... MED : ... : EVENT : detected !!!"
 				userEvent.clear()
+				#print "RX_FIFO_Len : "+str(RX_FIFO_Len())
+				TX(2,RX_FIFO_Len())
 				while(RX_FIFO_Len()):
 					(s,d) = RX_FIFO_Get()
 					USER_BRIDGE.RUN_DATA_PROCESSING(s,d)
@@ -185,100 +187,164 @@ def TX(_SLOT,_DATA):#gadasacemi monacemebis porti
 # RX_FIFO
 #########################################################
 RX_FIFO_MaxLen = 64
-RX_FIFO = ["",""] * RX_FIFO_MaxLen
+RX_FIFO = [""] * RX_FIFO_MaxLen
 RX_FIFO_X = 0
 RX_FIFO_Y = 0
-RX_FIFO_LEN = 0
+RX_FIFO_X_COU = 0
+RX_FIFO_Y_COU = 0
 #-------------------------------
 def RX_FIFO_init():
 	global RX_FIFO_X
+	global RX_FIFO_Y	
+	global RX_FIFO_X_COU
+	global RX_FIFO_Y_COU
+	global RX_FIFO_lock
 	RX_FIFO_X = 0
 	RX_FIFO_Y = 0
-	RX_FIFO_LEN = 0
+	RX_FIFO_X_COU = 0
+	RX_FIFO_Y_COU = 0
+	RX_FIFO_lock = threading.Lock()
 #-------------------------------
 def RX_FIFO_Put(SLOT,DATA):
-	global RX_FIFO_X	
-	global RX_FIFO_LEN
-	if(RX_FIFO_LEN < RX_FIFO_MaxLen):
+	global RX_FIFO_X
+	global RX_FIFO_Y	
+	global RX_FIFO_X_COU
+	global RX_FIFO_Y_COU
+	global RX_FIFO_lock
+	RX_FIFO_lock.acquire()
+	xxx =  RX_FIFO_X_COU*RX_FIFO_MaxLen + RX_FIFO_X
+	yyy =  RX_FIFO_Y_COU*RX_FIFO_MaxLen + RX_FIFO_Y
+	ddd =  xxx - yyy
+	if(xxx == yyy):
+		RX_FIFO_X_COU = 0
+		RX_FIFO_Y_COU = 0
+		RX_FIFO_X = 0
+		RX_FIFO_Y = 0
+	if(ddd < RX_FIFO_MaxLen):	
 		if(RX_FIFO_X == RX_FIFO_MaxLen):
 			RX_FIFO_X = 0
+			RX_FIFO_X_COU = RX_FIFO_X_COU + 1			
 		RX_FIFO[RX_FIFO_X]=(SLOT,DATA)
 		RX_FIFO_X = RX_FIFO_X + 1
-		RX_FIFO_LEN = RX_FIFO_LEN + 1
+	RX_FIFO_lock.release()
 #-------------------------------	
 def RX_FIFO_Satus():
-	if(RX_FIFO_LEN == RX_FIFO_MaxLen):
+	if(RX_FIFO_MaxLen):
 		return 1
 	else:
 		return 0
 #-------------------------------	
 def RX_FIFO_Get():
+	global RX_FIFO_X
 	global RX_FIFO_Y	
-	global RX_FIFO_LEN
-	#vel = ""	
-	if(RX_FIFO_LEN != 0):
-		if(RX_FIFO_Y == RX_FIFO_MaxLen):
-			RX_FIFO_Y = 0		
-		RX_FIFO_LEN = RX_FIFO_LEN - 1
-		#print str(RX_FIFO[RX_FIFO_Y])
-		(VEL_SLOT,VEL_DATA) = RX_FIFO[RX_FIFO_Y]
-		RX_FIFO_Y = RX_FIFO_Y + 1		
+	global RX_FIFO_X_COU
+	global RX_FIFO_Y_COU
+	global RX_FIFO_lock
+	RX_FIFO_lock.acquire()
+	xxx =  RX_FIFO_X_COU*RX_FIFO_MaxLen + RX_FIFO_X
+	yyy =  RX_FIFO_Y_COU*RX_FIFO_MaxLen + RX_FIFO_Y
+	ddd =  xxx - yyy
+	if(ddd == 0):
+		RX_FIFO_lock.release()	
+		return ("0","0")
+	if(RX_FIFO_Y == RX_FIFO_MaxLen):
+		RX_FIFO_Y = 0
+		RX_FIFO_Y_COU = RX_FIFO_Y_COU + 1		
+	(VEL_SLOT,VEL_DATA) = RX_FIFO[RX_FIFO_Y]
+	RX_FIFO_Y = RX_FIFO_Y + 1
+	RX_FIFO_lock.release()	
 	return (VEL_SLOT,VEL_DATA)
 #-------------------------------
 def RX_FIFO_Len():
-	global RX_FIFO_LEN
-	return RX_FIFO_LEN
+	global RX_FIFO_lock
+	RX_FIFO_lock.acquire()
+	xxx =  RX_FIFO_X_COU*RX_FIFO_MaxLen + RX_FIFO_X
+	yyy =  RX_FIFO_Y_COU*RX_FIFO_MaxLen + RX_FIFO_Y
+	ddd = xxx - yyy
+	RX_FIFO_lock.release()
+	return ddd
 #########################################################
 
 #########################################################
 # TX_FIFO
 #########################################################
 TX_FIFO_MaxLen = 64
-#TX_FIFO = [""] * TX_FIFO_MaxLen
-TX_FIFO = ["",""] * TX_FIFO_MaxLen
+TX_FIFO = [""] * TX_FIFO_MaxLen
 TX_FIFO_X = 0
 TX_FIFO_Y = 0
-TX_FIFO_LEN = 0
+TX_FIFO_X_COU = 0
+TX_FIFO_Y_COU = 0
 #-------------------------------
 def TX_FIFO_init():
 	global TX_FIFO_X
+	global TX_FIFO_Y	
+	global TX_FIFO_X_COU
+	global TX_FIFO_Y_COU
+	global TX_FIFO_lock
 	TX_FIFO_X = 0
 	TX_FIFO_Y = 0
-	TX_FIFO_LEN = 0
+	TX_FIFO_X_COU = 0
+	TX_FIFO_Y_COU = 0
+	TX_FIFO_lock = threading.Lock()
 #-------------------------------
 def TX_FIFO_Put(SLOT,DATA):
-	global TX_FIFO_X	
-	global TX_FIFO_LEN
-	if(TX_FIFO_LEN < TX_FIFO_MaxLen):
+	global TX_FIFO_X
+	global TX_FIFO_Y	
+	global TX_FIFO_X_COU
+	global TX_FIFO_Y_COU
+	global TX_FIFO_lock
+	TX_FIFO_lock.acquire()
+	xxx =  TX_FIFO_X_COU*TX_FIFO_MaxLen + TX_FIFO_X
+	yyy =  TX_FIFO_Y_COU*TX_FIFO_MaxLen + TX_FIFO_Y
+	ddd =  xxx - yyy
+	if(xxx == yyy):
+		TX_FIFO_X_COU = 0
+		TX_FIFO_Y_COU = 0
+		TX_FIFO_X = 0
+		TX_FIFO_Y = 0
+	if(ddd < TX_FIFO_MaxLen):	
 		if(TX_FIFO_X == TX_FIFO_MaxLen):
 			TX_FIFO_X = 0
+			TX_FIFO_X_COU = TX_FIFO_X_COU + 1			
 		TX_FIFO[TX_FIFO_X]=(SLOT,DATA)
 		TX_FIFO_X = TX_FIFO_X + 1
-		TX_FIFO_LEN = TX_FIFO_LEN + 1
+	TX_FIFO_lock.release()
 #-------------------------------	
 def TX_FIFO_Satus():
-	if(TX_FIFO_LEN == TX_FIFO_MaxLen):
+	if(TX_FIFO_MaxLen):
 		return 1
 	else:
 		return 0
 #-------------------------------	
 def TX_FIFO_Get():
+	global TX_FIFO_X
 	global TX_FIFO_Y	
-	global TX_FIFO_LEN
-	#vel = ""	
-	if(TX_FIFO_LEN != 0):
-		if(TX_FIFO_Y == TX_FIFO_MaxLen):
-			TX_FIFO_Y = 0		
-		TX_FIFO_LEN = TX_FIFO_LEN - 1
-		#print str(TX_FIFO[TX_FIFO_Y])
-		(VEL_SLOT,VEL_DATA) = TX_FIFO[TX_FIFO_Y]
-		TX_FIFO_Y = TX_FIFO_Y + 1		
+	global TX_FIFO_X_COU
+	global TX_FIFO_Y_COU
+	global TX_FIFO_lock
+	TX_FIFO_lock.acquire()
+	xxx =  TX_FIFO_X_COU*TX_FIFO_MaxLen + TX_FIFO_X
+	yyy =  TX_FIFO_Y_COU*TX_FIFO_MaxLen + TX_FIFO_Y
+	ddd =  xxx - yyy
+	if(ddd == 0):
+		TX_FIFO_lock.release()	
+		return ("0","0")
+	if(TX_FIFO_Y == TX_FIFO_MaxLen):
+		TX_FIFO_Y = 0
+		TX_FIFO_Y_COU = TX_FIFO_Y_COU + 1		
+	(VEL_SLOT,VEL_DATA) = TX_FIFO[TX_FIFO_Y]
+	TX_FIFO_Y = TX_FIFO_Y + 1
+	TX_FIFO_lock.release()	
 	return (VEL_SLOT,VEL_DATA)
 #-------------------------------
-def TX_FIFO_Len():#!!! amis algoritmi misaxedia rom kopliqtebi ar xdebodes
-	global TX_FIFO_LEN
-	#print "@@@@@@@@@@@@ "+str(TX_FIFO_LEN)
-	return TX_FIFO_LEN
+def TX_FIFO_Len():
+	global TX_FIFO_lock
+	TX_FIFO_lock.acquire()
+	xxx =  TX_FIFO_X_COU*TX_FIFO_MaxLen + TX_FIFO_X
+	yyy =  TX_FIFO_Y_COU*TX_FIFO_MaxLen + TX_FIFO_Y
+	ddd = xxx - yyy
+	TX_FIFO_lock.release()
+	return ddd
 #########################################################
 
 

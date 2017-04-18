@@ -26,7 +26,7 @@ xCOU = 0;
 def RUN_LOOP():
 	global xCOU
 	time.sleep(0.1)
-	print "LOOP"
+	#print "LOOP"
 	MEDIATOR.TX(1,str(xCOU))
 	xCOU=xCOU+1
 
