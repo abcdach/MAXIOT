@@ -1,4 +1,4 @@
-#import MEDIATOR
+import MEDIATOR
 import time
 #############################################
 from pyA20.gpio import gpio
@@ -7,39 +7,6 @@ from time import sleep
 import serial
 import math
 #############################################
-
-
-#############################################
-def RUN_INIT():
-	print "--> RUN_INIT : "
-	gpio.init()
-	gpio.setcfg(port.PA6, gpio.OUTPUT)
-	gpio.pullup(port.PA6, gpio.PULLDOWN)
-	gpio.output(port.PA6, gpio.HIGH)
-	time.sleep(0.1)
-#############################################	
-def RUN_MEM_DATA_PROCESSING(DATA):
-	print "--> XXX : " + str(DATA)
-	time.sleep(1)
-#############################################
-def RUN_DATA_PROCESSING(DATA):
-	print "--> XXXv : " + str(DATA)
-	if(DATA=="1"):
-		gpio.output(port.PA6, gpio.LOW)
-		time.sleep(0.3)
-		gpio.output(port.PA6, gpio.HIGH)
-#############################################
-def RUN_LOOP():
-	time.sleep(0.2)
-
-
-
-#gpio.output(port.PA6, gpio.HIGH)
-#gpio.output(port.PA6, gpio.LOW)
-#sleep(2)
-
-
-
 
 
 
@@ -103,55 +70,81 @@ def Sensor_Processor( Sensor_Data ):
 
 
 
+#############################################
+def RUN_INIT():
+	print "--> RUN_INIT : "	
+	global ser1
+	global ser2
+	global ser3
+	ser1 = serial.Serial(port = "/dev/ttyS1", baudrate=1200,timeout=0.1)
+	ser2 = serial.Serial(port = "/dev/ttyS2", baudrate=1200,timeout=0.1)
+	ser3 = serial.Serial(port = "/dev/ttyS3", baudrate=1200,timeout=0.1)
+	gpio.init()
+	gpio.setcfg(port.PA6, gpio.OUTPUT)
+	gpio.pullup(port.PA6, gpio.PULLDOWN)
+	gpio.output(port.PA6, gpio.LOW)	
+	time.sleep(0.1)
+	
+#############################################	
+def RUN_MEM_DATA_PROCESSING(DATA):
+	print "--> XXX : " + str(DATA)
+	time.sleep(1)
+#############################################
+def RUN_DATA_PROCESSING(DATA):
+	print "--> XXX : " + str(DATA)
+	if(DATA=="1"):
+		###################################################
+		gpio.output(port.PA6, gpio.HIGH)
+		time.sleep(1)
+		gpio.output(port.PA6, gpio.LOW)
+		###################################################
+		Sensor_Processor( ser1.read(200) )
+		Sensor1_VaporPressure   = Sensor_VaporPressure
+		Sensor1_Temperature     = Sensor_Temperature
+		Sensor1_AtmosphericPressure     = Sensor_AtmosphericPressure
+		Sensor1_Relativehumidity = Sensor_Relativehumidity
+		Sensor1_Relativehumidity = "%.2f" % round(Sensor1_Relativehumidity,2)
+		print "SEN1:"+" "+(time.strftime("%d/%m/%Y"))+" "+(time.strftime("%H:%M:%S"))+"   VP: "+str(Sensor1_VaporPressure)+"  T: "+str(Sensor1_Temperature)+"  AP: "+str(Sensor1_AtmosphericPressure)+"  RH: "+str(Sensor1_Relativehumidity)
+		###################################################
+		Sensor_Processor( ser2.read(200) )
+		Sensor2_VaporPressure   = Sensor_VaporPressure
+		Sensor2_Temperature     = Sensor_Temperature
+		Sensor2_AtmosphericPressure     = Sensor_AtmosphericPressure
+		Sensor2_Relativehumidity = Sensor_Relativehumidity
+		Sensor2_Relativehumidity = "%.2f" % round(Sensor2_Relativehumidity,2)
+		print "SEN2:"+" "+(time.strftime("%d/%m/%Y"))+" "+(time.strftime("%H:%M:%S"))+"   VP: "+str(Sensor2_VaporPressure)+"  T: "+str(Sensor2_Temperature)+"  AP: "+str(Sensor2_AtmosphericPressure)+"  RH: "+str(Sensor2_Relativehumidity)
+		###################################################
+		Sensor_Processor( ser3.read(200) )
+		Sensor3_VaporPressure   = Sensor_VaporPressure
+		Sensor3_Temperature     = Sensor_Temperature
+		Sensor3_AtmosphericPressure     = Sensor_AtmosphericPressure
+		Sensor3_Relativehumidity = Sensor_Relativehumidity
+		Sensor3_Relativehumidity = "%.2f" % round(Sensor3_Relativehumidity,2)
+		print "SEN3:"+" "+(time.strftime("%d/%m/%Y"))+" "+(time.strftime("%H:%M:%S"))+"   VP: "+str(Sensor3_VaporPressure)+"  T: "+str(Sensor3_Temperature)+"  AP: "+str(Sensor3_AtmosphericPressure)+"  RH: "+str(Sensor3_Relativehumidity)
+		###################################################
+		xx1 = str(Sensor1_Temperature)
+		xx2 = str(Sensor1_Relativehumidity)
+		xx3 = str(Sensor1_AtmosphericPressure)
+		###################################################
+		xx4 = str(Sensor2_Temperature)
+		xx5 = str(Sensor2_Relativehumidity)
+		xx6 = str(Sensor2_AtmosphericPressure)
+		###################################################
+		xx7 = str(Sensor3_Temperature)
+		xx8 = str(Sensor3_Relativehumidity)
+		xx9 = str(Sensor3_AtmosphericPressure)
+		###################################################
+		data = str(xx1+","+xx2+","+xx3+","+xx4+","+xx5+","+xx6+","+xx7+","+xx8+","+xx9)		
+		#print data
+		MEDIATOR.TX(0,str(data))
+		
+		
+		#time.sleep(0.5)
+		#MEDIATOR.TX(1,str(pressure))
+		#time.sleep(0.5)
 
-
-
-
-
-
-
-
-
-
-
-print "Hiiiiiiiiiiii"
-
-ser1 = serial.Serial(port = "/dev/ttyS1", baudrate=1200,timeout=0.1)
-ser2 = serial.Serial(port = "/dev/ttyS2", baudrate=1200,timeout=0.1)
-ser3 = serial.Serial(port = "/dev/ttyS3", baudrate=1200,timeout=0.1)
-gpio.init()
-gpio.setcfg(port.PA6, gpio.OUTPUT)
-gpio.pullup(port.PA6, gpio.PULLDOWN)
-
-###################################################
-gpio.output(port.PA6, gpio.HIGH)
-time.sleep(1)
-gpio.output(port.PA6, gpio.LOW)
-###################################################
-Sensor_Processor( ser1.read(200) )
-Sensor1_VaporPressure   = Sensor_VaporPressure
-Sensor1_Temperature     = Sensor_Temperature
-Sensor1_AtmosphericPressure     = Sensor_AtmosphericPressure
-Sensor1_Relativehumidity = Sensor_Relativehumidity
-Sensor1_Relativehumidity = "%.2f" % round(Sensor1_Relativehumidity,2)
-print "SEN1:"+" "+(time.strftime("%d/%m/%Y"))+" "+(time.strftime("%H:%M:%S"))+"   VP: "+str(Sensor1_VaporPressure)+"  T: "+str(Sensor1_Temperature)+"  AP: "+str(Sensor1_AtmosphericPressure)+"  RH: "+str(Sensor1_Relativehumidity)
-###################################################
-Sensor_Processor( ser2.read(200) )
-Sensor2_VaporPressure   = Sensor_VaporPressure
-Sensor2_Temperature     = Sensor_Temperature
-Sensor2_AtmosphericPressure     = Sensor_AtmosphericPressure
-Sensor2_Relativehumidity = Sensor_Relativehumidity
-Sensor2_Relativehumidity = "%.2f" % round(Sensor2_Relativehumidity,2)
-print "SEN2:"+" "+(time.strftime("%d/%m/%Y"))+" "+(time.strftime("%H:%M:%S"))+"   VP: "+str(Sensor2_VaporPressure)+"  T: "+str(Sensor2_Temperature)+"  AP: "+str(Sensor2_AtmosphericPressure)+"  RH: "+str(Sensor2_Relativehumidity)
-###################################################
-Sensor_Processor( ser3.read(200) )
-Sensor3_VaporPressure   = Sensor_VaporPressure
-Sensor3_Temperature     = Sensor_Temperature
-Sensor3_AtmosphericPressure     = Sensor_AtmosphericPressure
-Sensor3_Relativehumidity = Sensor_Relativehumidity
-Sensor3_Relativehumidity = "%.2f" % round(Sensor3_Relativehumidity,2)
-print "SEN3:"+" "+(time.strftime("%d/%m/%Y"))+" "+(time.strftime("%H:%M:%S"))+"   VP: "+str(Sensor3_VaporPressure)+"  T: "+str(Sensor3_Temperature)+"  AP: "+str(Sensor3_AtmosphericPressure)+"  RH: "+str(Sensor3_Relativehumidity)
-###################################################
+def RUN_LOOP():
+	time.sleep(2)
 
 
 
