@@ -136,12 +136,29 @@ def RUN_DATA_PROCESSING(DATA):
 		###################################################
 		data = str(xx1+","+xx2+","+xx3+","+xx4+","+xx5+","+xx6+","+xx7+","+xx8+","+xx9)		
 		#print data
+		
 		MEDIATOR.TX(0,str(data))
 		
 		
-		#time.sleep(0.5)
-		#MEDIATOR.TX(1,str(pressure))
-		#time.sleep(0.5)
+		#time.sleep(0.1)
+		#MEDIATOR.TX(1,xx1)
+		#time.sleep(0.1)
+		#MEDIATOR.TX(2,xx2)		
+		#time.sleep(0.1)
+		#MEDIATOR.TX(9,xx3)		
+		#time.sleep(0.1)
+		#MEDIATOR.TX(4,xx4)
+		#time.sleep(0.1)
+		#MEDIATOR.TX(5,xx5)		
+		#time.sleep(0.05)
+		#MEDIATOR.TX(6,xx6)
+		#time.sleep(0.05)
+		#MEDIATOR.TX(9,xx7)
+		#time.sleep(0.05)
+		#MEDIATOR.TX(8,xx8)		
+		#time.sleep(0.05)
+		#MEDIATOR.TX(9,xx9)		
+
 
 def RUN_LOOP():
 	time.sleep(2)
