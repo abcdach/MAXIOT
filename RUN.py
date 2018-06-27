@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 ##############################################
 # v0.01			export PS1='> '
 ##############################################
@@ -9,7 +11,7 @@ import time
 
 
 
- 
+
 MAX_SYS_PATH = os.path.dirname(os.path.realpath(__file__))
 MAX_SYS_SUB_PATH = os.path.dirname(MAX_SYS_PATH)
 MAX_SYS_CONFIG_PATH = MAX_SYS_SUB_PATH+"/MAX_CONFIG"
